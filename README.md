@@ -1243,7 +1243,7 @@
                 } else if (orderedQuestions && currentQuestionIndex === orderedQuestions.length -1) {
                     showResults();
                 }
-            }, 1500);
+            }, 4000);
         }
 
         function setStatusClass(element, correct) {
