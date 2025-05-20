@@ -1138,7 +1138,7 @@
             questionTimeout = setTimeout(() => {
                 currentQuestionIndex++;
                 setNextQuestion();
-            }, 4000); 
+            }, 2000); 
         }
 
         function setStatusClass(element, correct) {
