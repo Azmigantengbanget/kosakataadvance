@@ -167,7 +167,7 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Pengetahuan Kosa-kata Inggris (1580 Soal - No Hover BG)</h1>
+        <h1>Pengetahuan Kosa-kata Inggris</h1>
         <div id="question-counter" class="question-counter-text hide">0/0</div>
         <div id="question-container" class="hide">
             <div id="question">Kata Bahasa Inggris</div>
