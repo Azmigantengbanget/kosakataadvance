@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -31,6 +32,14 @@
             margin-bottom: 10px;
         }
 
+        #completion-message {
+            color: #28a745;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
         .question-counter-text {
             font-size: 0.9em;
             color: #666;
@@ -56,86 +65,55 @@
         }
 
         .btn {
-            background-color: #007bff; /* DEFAULT LIGHT BLUE */
+            background-color: #007bff;
             color: white;
             border: none;
             padding: 12px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
-            transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Transisi untuk box-shadow jika masih digunakan untuk fokus */
-            word-wrap: break-word; 
-            min-height: 50px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            outline: none; 
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            word-wrap: break-word;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+            font-weight: bold;
         }
 
-        /* Tombol yang BELUM DIJAWAB */
-        .btn:not(.correct):not(.wrong) {
-            background-color: #007bff; 
+        .btn:not(.correct):not(.wrong):not(.skip-btn) { background-color: #007bff; }
+        .btn:not(.correct):not(.wrong):not(.skip-btn):focus {
+            background-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+        .btn:not([disabled]):not(.correct):not(.wrong):not(.skip-btn):hover {}
+        .btn:not([disabled]):not(.correct):not(.wrong):not(.skip-btn):focus:hover {
+            background-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
         }
 
-        /* FOKUS pada tombol yang BELUM DIJAWAB */
-        .btn:not(.correct):not(.wrong):focus {
-            background-color: #007bff; /* Latar TETAP Biru Muda */
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Indikator fokus biru muda transparan */
-        }
-
-        /* HOVER DINONAKTIFKAN TOTAL untuk perubahan warna latar */
-        /* Blok CSS untuk .btn:not([disabled]):not(.correct):not(.wrong):hover yang mengubah background-color telah dihapus */
-        /* Anda bisa membiarkan :hover tanpa style khusus, atau hanya efek minor non-background */
-         .btn:not([disabled]):not(.correct):not(.wrong):hover {
-            /* Tidak ada perubahan background-color */
-            /* Jika ingin efek hover yang sangat minimal, bisa seperti ini: */
-            /* box-shadow: 0 0 5px rgba(0,0,0,0.1); */
-            /* Untuk sekarang, kita biarkan tanpa efek hover sama sekali pada latar */
-        }
-        /* Pastikan juga :focus:hover tidak mengubah warna latar */
-         .btn:not([disabled]):not(.correct):not(.wrong):focus:hover {
-            background-color: #007bff; /* Latar TETAP Biru Muda, bahkan saat fokus dan hover */
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Tetap indikator fokus standar */
-        }
-
-
-        /* Tombol SUDAH DIJAWAB - BENAR */
-        .btn.correct {
-            background-color: #28a745 !important; 
-            color: white;
-            box-shadow: none; 
-        }
-        .btn.correct:hover { /* Efek hover setelah benar masih ada (warna hijau lebih gelap) */
-            background-color: #218838 !important;
-        }
-        .btn.correct:focus { 
+        .btn.correct { background-color: #28a745 !important; box-shadow: none; }
+        .btn.correct:hover { background-color: #218838 !important; }
+        .btn.correct:focus {
             background-color: #28a745 !important;
             box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.6) !important;
         }
 
-        /* Tombol SUDAH DIJAWAB - SALAH */
-        .btn.wrong {
-            background-color: #dc3545 !important; 
-            color: white;
-            box-shadow: none; 
-        }
-        .btn.wrong:hover { /* Efek hover setelah salah masih ada (warna merah lebih gelap) */
-            background-color: #c82333 !important;
-        }
-        .btn.wrong:focus { 
+        .btn.wrong { background-color: #dc3545 !important; box-shadow: none; }
+        .btn.wrong:hover { background-color: #c82333 !important; }
+        .btn.wrong:focus {
             background-color: #dc3545 !important;
             box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.6) !important;
         }
 
-        /* Tombol DISABLED (semua pilihan setelah satu dipilih) */
         .btn:disabled {
             cursor: not-allowed;
-            opacity: 0.80; 
-        }
-        .btn:disabled:not(.correct):not(.wrong) { /* Jika ada kasus tombol disabled TANPA .correct atau .wrong */
-            background-color: #6c757d !important; 
-            color: #ccc !important;
             opacity: 0.65;
+        }
+        .btn:disabled:not(.correct):not(.wrong):not(.skip-btn) {
+            background-color: #6c757d !important;
+            color: #ccc !important;
         }
 
         .controls {
@@ -144,58 +122,70 @@
             gap: 10px;
         }
 
-        .start-btn, #restart-btn {
-            font-weight: bold;
-        }
-
-        .hide {
-            display: none;
-        }
-
-        #result-container h2 {
+        #skip-navigation-controls {
+            justify-content: space-between;
+            margin-top: 25px;
             margin-bottom: 10px;
         }
 
-        #score {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 20px;
+        .skip-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            min-width: 80px;
         }
+        .skip-btn:hover {
+            background-color: #218838;
+            color: white;
+        }
+        .skip-btn:disabled {
+            background-color: #a3d8b0 !important;
+            color: #e9f5ec !important;
+            cursor: not-allowed;
+        }
+
+        .hide { display: none !important; }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>Pengetahuan Kosa-kata Inggris</h1>
+        <p id="completion-message" class="hide">Selamat Kuis Sudah Selesai 🎉</p>
+        <div id="initial-controls" class="controls">
+            <button id="start-btn" class="btn">Mulai</button>
+            <button id="continue-btn" class="btn hide">Lanjutkan</button>
+        </div>
         <div id="question-counter" class="question-counter-text hide">0/0</div>
         <div id="question-container" class="hide">
             <div id="question">Kata Bahasa Inggris</div>
             <div id="answer-buttons" class="btn-grid">
-                </div>
-        </div>
-        <div class="controls">
-            <button id="start-btn" class="start-btn btn">Mulai</button>
-        </div>
-        <div id="result-container" class="hide">
-            <h2>Skor Akhir Anda:</h2>
-            <p id="score">0 / 0</p>
-            <button id="restart-btn" class="btn">Ulangi Kuis</button>
+            </div>
+            <div id="skip-navigation-controls" class="controls hide">
+                <button id="prev-50-btn" class="btn skip-btn">&laquo; 50</button>
+                <button id="next-50-btn" class="btn skip-btn">50 &raquo;</button>
+            </div>
         </div>
     </div>
 
     <script>
         const startButton = document.getElementById('start-btn');
-        const restartButton = document.getElementById('restart-btn');
+        const continueButton = document.getElementById('continue-btn');
+        const initialControls = document.getElementById('initial-controls');
+        const completionMessageElement = document.getElementById('completion-message');
         const questionContainerElement = document.getElementById('question-container');
         const questionElement = document.getElementById('question');
         const answerButtonsElement = document.getElementById('answer-buttons');
-        const resultContainerElement = document.getElementById('result-container');
-        const scoreElement = document.getElementById('score');
         const questionCounterElement = document.getElementById('question-counter');
+
+        const skipNavigationControls = document.getElementById('skip-navigation-controls');
+        const prev50Button = document.getElementById('prev-50-btn');
+        const next50Button = document.getElementById('next-50-btn');
+        const JUMP_AMOUNT = 50;
 
         let orderedQuestions, currentQuestionIndex;
         let score = 0;
-        let questionTimeout; 
+        let questionTimeout;
 
         // Daftar kata mentah dari PDF (Inggris: Indonesia) - Total 1580 kata
         const rawVocabularyList = [
@@ -354,18 +344,17 @@
             { en: 'controversy', id: 'kontroversi' }, { en: 'convenient', id: 'mudah' },
             { en: 'convey', id: 'menyampaikan' }, { en: 'conviction', id: 'keyakinan' },
             { en: 'conviviality', id: 'keramahan' }, { en: 'copewith', id: 'copewith' },
-            // Kosakata 309-1580 (dari PDF kedua) - Saya akan memasukkan semua seperti sebelumnya
             { en: 'copious', id: 'banyak sekali' }, { en: 'cordial', id: 'ramah' },
-            { en: 'corporeal', id: 'jasmani' }, { en: 'corpulent', id: 'banyak' }, 
+            { en: 'corporeal', id: 'jasmani' }, { en: 'corpulent', id: 'banyak' },
             { en: 'corroborate', id: 'menguatkan' }, { en: 'courteous', id: 'sopan' },
-            { en: 'cov', id: 'tersembunyi' }, 
-            { en: 'cozy', id: 'nyaman' }, 
+            { en: 'cov', id: 'tersembunyi' },
+            { en: 'cozy', id: 'nyaman' },
             { en: 'crave', id: 'mendambakan' }, { en: 'crease', id: 'lipatan' },
             { en: 'criminology', id: 'kriminologi' }, { en: 'crooked', id: 'bengkok' },
             { en: 'crouch', id: 'mendekam' }, { en: 'crucial', id: 'sangat penting' },
             { en: 'crude', id: 'mentah' }, { en: 'cruel', id: 'kejam' },
             { en: 'cryptic', id: 'samar' }, { en: 'cultivate', id: 'mengolah' },
-            { en: 'cumbersome', id: 'berat/merepotkan' }, 
+            { en: 'cumbersome', id: 'berat/merepotkan' },
             { en: 'cumulative', id: 'kumulatif' }, { en: 'curb', id: 'mengekang' },
             { en: 'curious', id: 'ingin tahu' }, { en: 'curt', id: 'singkat' },
             { en: 'curtail', id: 'membatasi' }, { en: 'damp', id: 'lembab' },
@@ -413,7 +402,7 @@
             { en: 'disdain', id: 'penghinaan' }, { en: 'dismal', id: 'suram' },
             { en: 'dismay', id: 'kecemasan' }, { en: 'dismissive', id: 'meremehkan' },
             { en: 'disparity', id: 'disparitas' }, { en: 'disperse', id: 'membubarkan' },
-            { en: 'disposition', id: 'watak' }, 
+            { en: 'disposition', id: 'watak' },
             { en: 'disprove', id: 'membantah' }, { en: 'dispute', id: 'perselisihan' },
             { en: 'disrobe', id: 'menanggalkan pakaian' }, { en: 'dissect', id: 'membedah' },
             { en: 'disseminate', id: 'menyebarluaskan' }, { en: 'dissolve', id: 'membubarkan' },
@@ -427,7 +416,7 @@
             { en: 'drain', id: 'menguras' }, { en: 'drastic', id: 'drastis' },
             { en: 'drawback', id: 'kekurangan' }, { en: 'dreary', id: 'suram' },
             { en: 'drench', id: 'membuat basah kuyup' }, { en: 'drip', id: 'menitik' },
-            { en: 'drought', id: 'kekeringan' }, { en: 'drowsy', id: 'mengantuk' }, 
+            { en: 'drought', id: 'kekeringan' }, { en: 'drowsy', id: 'mengantuk' },
             { en: 'dubious', id: 'ragu-ragu' }, { en: 'dull', id: 'membosankan' },
             { en: 'dumbfound', id: 'mengherankan' }, { en: 'dunce', id: 'orang bodoh' },
             { en: 'dungeon', id: 'penjara gelap bawah tanah' }, { en: 'durable', id: 'tahan lama' },
@@ -436,7 +425,7 @@
             { en: 'eclipse', id: 'gerhana' }, { en: 'ecology', id: 'ekologi' },
             { en: 'ecumenical', id: 'ekumenis' }, { en: 'edible', id: 'dimakan' },
             { en: 'edifice', id: 'gedung' }, { en: 'eerie', id: 'ngeri' },
-            { en: 'efface', id: 'menghapus' }, 
+            { en: 'efface', id: 'menghapus' },
             { en: 'effuse', id: 'yg mengeluarkan' }, { en: 'effusion', id: 'pengaliran cairan' },
             { en: 'elaborate', id: 'menguraikan' }, { en: 'elasticity', id: 'elastisitas' },
             { en: 'elderly', id: 'tua' }, { en: 'elegant', id: 'anggun' },
@@ -448,7 +437,7 @@
             { en: 'emboss', id: 'menatah' }, { en: 'eminent', id: 'terkenal' },
             { en: 'emit', id: 'memancarkan' }, { en: 'emulate', id: 'meniru' },
             { en: 'enamored', id: 'terpikat' }, { en: 'enchant', id: 'mempesona' },
-            { en: 'enchanting', id: 'mempesona' }, { en: 'encomium', id: 'pujian agung' }, 
+            { en: 'enchanting', id: 'mempesona' }, { en: 'encomium', id: 'pujian agung' },
             { en: 'encounter', id: 'menghadapi' }, { en: 'endeavor', id: 'berusaha keras' },
             { en: 'endorse', id: 'mengesahkan' }, { en: 'engender', id: 'menimbulkan' },
             { en: 'enhance', id: 'mempertinggi' }, { en: 'enigma', id: 'teka-teki' },
@@ -457,7 +446,7 @@
             { en: 'enthrall', id: 'memikat' }, { en: 'entice', id: 'menarik' },
             { en: 'enumerate', id: 'menghitung' }, { en: 'enunciate', id: 'melafalkan' },
             { en: 'envelope', id: 'amplop' }, { en: 'environ', id: 'lingkungan' },
-            { en: 'envisage', id: 'membayangkan' }, { en: 'ephemeral', id: 'tidak kekal' }, 
+            { en: 'envisage', id: 'membayangkan' }, { en: 'ephemeral', id: 'tidak kekal' },
             { en: 'epiphyte', id: 'benalu' }, { en: 'epitaph', id: 'tulisan di batu nisan' },
             { en: 'epithet', id: 'julukan' }, { en: 'equitable', id: 'adil' },
             { en: 'equivocal', id: 'samar-samar' }, { en: 'era', id: 'era' },
@@ -468,17 +457,17 @@
             { en: 'esteem', id: 'penghargaan' }, { en: 'estrange', id: 'menjauhkan' },
             { en: 'eulogy', id: 'sanjungan' }, { en: 'evacuate', id: 'mengungsi' },
             { en: 'evade', id: 'menghindari' }, { en: 'evanescent', id: 'cepat berlalu dr ingatan' },
-            { en: 'even', id: 'bahkan' }, { en: 'evenhanded', id: 'adil dan tidak memihak' }, 
+            { en: 'even', id: 'bahkan' }, { en: 'evenhanded', id: 'adil dan tidak memihak' },
             { en: 'evolve', id: 'berkembang' }, { en: 'exacerbate', id: 'memperuncing' },
             { en: 'exacting', id: 'rewel' }, { en: 'exalt', id: 'mengagungkan' },
             { en: 'excavate', id: 'menggali' }, { en: 'exceed', id: 'melebihi' },
             { en: 'excerpt', id: 'kutipan' }, { en: 'excrete', id: 'mengeluarkan' },
             { en: 'excursion', id: 'tamasya' }, { en: 'execute', id: 'melaksanakan' },
             { en: 'exhaustive', id: 'lengkap' }, { en: 'exhilarating', id: 'menggembirakan' },
-            { en: 'exhortation', id: 'nasihat' }, { en: 'expendable', id: 'dapat dikorbankan' }, 
+            { en: 'exhortation', id: 'nasihat' }, { en: 'expendable', id: 'dapat dikorbankan' },
             { en: 'expire', id: 'berakhir' }, { en: 'explicit', id: 'eksplisit' },
             { en: 'exploit', id: 'mengeksploitasi' }, { en: 'explore', id: 'menjelajah' },
-            { en: 'expose', id: 'menelanjangi' }, { en: 'expunge', id: 'menghapus' }, 
+            { en: 'expose', id: 'menelanjangi' }, { en: 'expunge', id: 'menghapus' },
             { en: 'extensive', id: 'luas' }, { en: 'extol', id: 'mendewakan' },
             { en: 'extract', id: 'ekstrak' }, { en: 'extraneous', id: 'asing' },
             { en: 'extravagant', id: 'boros' }, { en: 'fable', id: 'fabel' },
@@ -493,7 +482,7 @@
             { en: 'faulty', id: 'salah' }, { en: 'feasible', id: 'layak' },
             { en: 'feat', id: 'prestasi' }, { en: 'fee', id: 'biaya' },
             { en: 'feeble', id: 'lemah' }, { en: 'feign', id: 'berpura-pura' },
-            { en: 'felicity', id: 'kebahagiaan besar' }, 
+            { en: 'felicity', id: 'kebahagiaan besar' },
             { en: 'ferocious', id: 'ganas' }, { en: 'fertile', id: 'subur' },
             { en: 'fervent', id: 'sungguh-sungguh' }, { en: 'fickle', id: 'plin-plan' },
             { en: 'fidelity', id: 'kesetiaan' }, { en: 'fiery', id: 'berapi-api' },
@@ -505,14 +494,14 @@
             { en: 'flip', id: 'membalik' }, { en: 'florid', id: 'kemerah-merahan' },
             { en: 'fluctuate', id: 'berubah-ubah' }, { en: 'foggy', id: 'berkabut' },
             { en: 'fold', id: 'melipat' }, { en: 'fool', id: 'menipu' },
-            { en: 'forego', id: 'melepaskan' }, 
+            { en: 'forego', id: 'melepaskan' },
             { en: 'foremost', id: 'terutama' }, { en: 'forestall', id: 'mencegah' },
             { en: 'forlorn', id: 'sedih' }, { en: 'formative', id: 'formatif' },
             { en: 'foul', id: 'busuk' }, { en: 'fragile', id: 'rapuh' },
             { en: 'fragment', id: 'fragmen' }, { en: 'fragrant', id: 'harum' },
             { en: 'frail', id: 'lemah' }, { en: 'framework', id: 'kerangka' },
             { en: 'fraud', id: 'penipuan' }, { en: 'fraudulent', id: 'curang' },
-            { en: 'frenetic', id: 'hiruk pikuk' }, 
+            { en: 'frenetic', id: 'hiruk pikuk' },
             { en: 'frustrate', id: 'menggagalkan' }, { en: 'fugitive', id: 'buronan' },
             { en: 'fundamental', id: 'mendasar' }, { en: 'fuse', id: 'sekering' },
             { en: 'fusion', id: 'fusi' }, { en: 'futile', id: 'sia-sia' },
@@ -521,7 +510,7 @@
             { en: 'gap', id: 'celah' }, { en: 'garrulous', id: 'cerewet' },
             { en: 'gaudy', id: 'terlalu menyolok' }, { en: 'genial', id: 'ramah' },
             { en: 'gentle', id: 'lemah lembut' }, { en: 'genuine', id: 'asli' },
-            { en: 'germane', id: 'relevan' }, 
+            { en: 'germane', id: 'relevan' },
             { en: 'germinate', id: 'berkecambah' }, { en: 'ghastly', id: 'mengerikan' },
             { en: 'glisten', id: 'berkilau' }, { en: 'glitter', id: 'berkilau' },
             { en: 'glorify', id: 'memuliakan' }, { en: 'glory', id: 'kejayaan' },
@@ -529,9 +518,9 @@
             { en: 'gorgeous', id: 'cantik' }, { en: 'grab', id: 'mengambil' },
             { en: 'grace', id: 'rahmat' }, { en: 'graphic', id: 'grafis' },
             { en: 'grasp', id: 'memahami' }, { en: 'grassroots', id: 'rakyat' },
-            { en: 'gratuitous', id: 'cuma-cuma' }, 
-            { en: 'grave', id: 'kuburan' }, { en: 'gravid', id: 'hamil' }, 
-            { en: 'gravitas', id: 'kewibawaan' }, 
+            { en: 'gratuitous', id: 'cuma-cuma' },
+            { en: 'grave', id: 'kuburan' }, { en: 'gravid', id: 'hamil' },
+            { en: 'gravitas', id: 'kewibawaan' },
             { en: 'gravitate', id: 'condong' }, { en: 'gravity', id: 'gaya berat' },
             { en: 'graze', id: 'menggembalakan' }, { en: 'gregarious', id: 'yg suka berteman' },
             { en: 'grim', id: 'suram' }, { en: 'grip', id: 'pegangan' },
@@ -549,8 +538,8 @@
             { en: 'hector', id: 'menggertak' }, { en: 'hedonism', id: 'hedonisme' },
             { en: 'hedonist', id: 'hedonis' }, { en: 'heed', id: 'mengindahkan' },
             { en: 'heighten', id: 'mempertinggi' }, { en: 'helical', id: 'spiral' },
-            { en: 'herald', id: 'bentara' }, { en: 'heretic', id: 'orang murtad' }, 
-            { en: 'heterogeneous', id: 'heterogen' }, { en: 'heyday', id: 'kejayaan' }, 
+            { en: 'herald', id: 'bentara' }, { en: 'heretic', id: 'orang murtad' },
+            { en: 'heterogeneous', id: 'heterogen' }, { en: 'heyday', id: 'kejayaan' },
             { en: 'hilarious', id: 'ria' }, { en: 'hinder', id: 'menghalangi' },
             { en: 'hoax', id: 'lelucon' }, { en: 'hoist', id: 'kerekan' },
             { en: 'holocaust', id: 'bencana' }, { en: 'homogeneous', id: 'homogen' },
@@ -562,24 +551,24 @@
             { en: 'humiliate', id: 'menghina' }, { en: 'hurl', id: 'melemparkan' },
             { en: 'hyperbole', id: 'penghebatan' }, { en: 'hypocrite', id: 'munafik' },
             { en: 'idea', id: 'ide' }, { en: 'ideal', id: 'ideal' },
-            { en: 'idiosyncrasy', id: 'keistimewaan' }, { en: 'idle', id: 'menganggur' }, 
+            { en: 'idiosyncrasy', id: 'keistimewaan' }, { en: 'idle', id: 'menganggur' },
             { en: 'illiterate', id: 'buta huruf' }, { en: 'illusion', id: 'ilusi' },
             { en: 'illustrate', id: 'menjelaskan' }, { en: 'imaginary', id: 'imajiner' },
             { en: 'imbibe', id: 'menyerap' }, { en: 'immense', id: 'besar sekali' },
             { en: 'imminent', id: 'dekat' }, { en: 'immortal', id: 'abadi' },
-            { en: 'immune', id: 'kebal' }, { en: 'immutable', id: 'tidak berubah' }, 
+            { en: 'immune', id: 'kebal' }, { en: 'immutable', id: 'tidak berubah' },
             { en: 'impair', id: 'merusak' }, { en: 'impartial', id: 'berimbang' },
             { en: 'impecunious', id: 'miskin' }, { en: 'impediment', id: 'halangan' },
-            { en: 'impel', id: 'mendorong' }, 
+            { en: 'impel', id: 'mendorong' },
             { en: 'impending', id: 'mendatang' }, { en: 'imperceptible', id: 'tak kelihatan' },
             { en: 'implement', id: 'melaksanakan' }, { en: 'impose', id: 'memaksakan' },
             { en: 'impromptu', id: 'mendadak' }, { en: 'improvise', id: 'berimprovisasi' },
             { en: 'impute', id: 'menyalahkan' }, { en: 'incalculable', id: 'tak terhitung' },
-            { en: 'incandescent', id: 'pijar' }, { en: 'incense', id: 'dupa' }, 
+            { en: 'incandescent', id: 'pijar' }, { en: 'incense', id: 'dupa' },
             { en: 'incentive', id: 'insentif' }, { en: 'incessant', id: 'tak henti-hentinya' },
             { en: 'incipient', id: 'yg baru jadi' }, { en: 'incise', id: 'menoreh' },
-            { en: 'incognito', id: 'yg menyamar' }, { en: 'incompatible', id: 'tidak kompatibel' }, 
-            { en: 'incongruous', id: 'tdk sesuai' }, { en: 'inconsonant', id: 'tidak selaras' }, 
+            { en: 'incognito', id: 'yg menyamar' }, { en: 'incompatible', id: 'tidak kompatibel' },
+            { en: 'incongruous', id: 'tdk sesuai' }, { en: 'inconsonant', id: 'tidak selaras' },
             { en: 'increment', id: 'kenaikan' }, { en: 'incriminate', id: 'memberatkan' },
             { en: 'incumbent', id: 'berkewajiban' }, { en: 'indemnify', id: 'mengganti rugi' },
             { en: 'indict', id: 'mendakwa' }, { en: 'indifferent', id: 'acuh tak acuh' },
@@ -589,14 +578,14 @@
             { en: 'induce', id: 'menyebabkan' }, { en: 'inept', id: 'janggal' },
             { en: 'inevitable', id: 'tak terelakkan' }, { en: 'infamous', id: 'hina' },
             { en: 'infinite', id: 'tak terbatas' }, { en: 'infinitesimal', id: 'kecil sekali' },
-            { en: 'infringe', id: 'melanggar' }, { en: 'infuriate', id: 'membuat sangat marah' }, 
+            { en: 'infringe', id: 'melanggar' }, { en: 'infuriate', id: 'membuat sangat marah' },
             { en: 'ingenious', id: 'terampil' }, { en: 'ingenuous', id: 'terus terang' },
             { en: 'ingredient', id: 'bahan' }, { en: 'inhabit', id: 'mendiami' },
             { en: 'inherent', id: 'inheren' }, { en: 'inhibit', id: 'menghalangi' },
             { en: 'inhospitable', id: 'tidak ramah' }, { en: 'inimical', id: 'bermusuhan' },
             { en: 'initial', id: 'awal' }, { en: 'injurious', id: 'berbahaya' },
             { en: 'innate', id: 'asli' }, { en: 'innocuous', id: 'tdk berbahaya' },
-            { en: 'innovative', id: 'inovatif' }, { en: 'inopportune', id: 'tidak tepat waktu' }, 
+            { en: 'innovative', id: 'inovatif' }, { en: 'inopportune', id: 'tidak tepat waktu' },
             { en: 'inordinate', id: 'banyak sekali' }, { en: 'inroad', id: 'penjebolan' },
             { en: 'insatiate', id: 'yg tak pernah puas' }, { en: 'insinuate', id: 'menyusup' },
             { en: 'insipid', id: 'hambar' }, { en: 'insolent', id: 'kurang ajar' },
@@ -611,9 +600,9 @@
             { en: 'intrepid', id: 'pemberani' }, { en: 'intricate', id: 'rumit' },
             { en: 'intrigue', id: 'intrik' }, { en: 'intrude', id: 'mengganggu' },
             { en: 'invaluable', id: 'tak ternilai' }, { en: 'inventory', id: 'inventarisasi' },
-            { en: 'inveterate', id: 'sudah berurat akar' }, 
+            { en: 'inveterate', id: 'sudah berurat akar' },
             { en: 'invincible', id: 'tak terkalahkan' }, { en: 'inviting', id: 'mengundang' },
-            { en: 'involuntary', id: 'tidak disengaja' }, 
+            { en: 'involuntary', id: 'tidak disengaja' },
             { en: 'irate', id: 'marah' }, { en: 'irreversible', id: 'yg tak dpt diubah' },
             { en: 'irrevocable', id: 'yg tdk ditarik kembali' }, { en: 'irritable', id: 'pemarah' },
             { en: 'itinerant', id: 'berkeliling' }, { en: 'jagged', id: 'bergerigi' },
@@ -628,24 +617,24 @@
             { en: 'lapse', id: 'selang' }, { en: 'lassitude', id: 'kelesuan' },
             { en: 'last', id: 'terakhir' }, { en: 'latent', id: 'tersembunyi' },
             { en: 'laud', id: 'menyanjung' }, { en: 'lavish', id: 'mewah' },
-            { en: 'lax', id: 'longgar' }, { en: 'leaflet', id: 'selebaran' }, 
-            { en: 'leash', id: 'rantai anjing' }, { en: 'leavening', id: 'ragi' }, 
+            { en: 'lax', id: 'longgar' }, { en: 'leaflet', id: 'selebaran' },
+            { en: 'leash', id: 'rantai anjing' }, { en: 'leavening', id: 'ragi' },
             { en: 'leeward', id: 'di bawah angin' }, { en: 'legendary', id: 'legendaris' },
             { en: 'legitimate', id: 'sah' }, { en: 'lenient', id: 'lunak' },
-            { en: 'lessen', id: 'mengurangi' }, { en: 'lethal', id: 'mematikan' }, 
+            { en: 'lessen', id: 'mengurangi' }, { en: 'lethal', id: 'mematikan' },
             { en: 'lethargic', id: 'lesu' }, { en: 'levity', id: 'kesembronoan' },
-            { en: 'lewd', id: 'cabul' }, { en: 'liable', id: 'bertanggung jawab' }, 
+            { en: 'lewd', id: 'cabul' }, { en: 'liable', id: 'bertanggung jawab' },
             { en: 'liaison', id: 'hubungan' }, { en: 'licentious', id: 'cabul' },
             { en: 'likely', id: 'mungkin' }, { en: 'linger', id: 'berkepanjangan' },
-            { en: 'link', id: 'tautan' }, { en: 'litigate', id: 'mengajukan perkara' }, 
-            { en: 'loafer', id: 'pemalas' }, 
+            { en: 'link', id: 'tautan' }, { en: 'litigate', id: 'mengajukan perkara' },
+            { en: 'loafer', id: 'pemalas' },
             { en: 'loathsome', id: 'menjijikkan' }, { en: 'locate', id: 'menemukan' },
             { en: 'locomotion', id: 'daya penggerak' }, { en: 'lodestar', id: 'pedoman' },
             { en: 'lofty', id: 'luhur' }, { en: 'long', id: 'panjang' },
-            { en: 'loom', id: 'membayang' }, 
+            { en: 'loom', id: 'membayang' },
             { en: 'loophole', id: 'jalan keluar' }, { en: 'lucid', id: 'jelas' },
             { en: 'lucrative', id: 'menguntungkan' }, { en: 'lugubrious', id: 'murung' },
-            { en: 'lukewarm', id: 'suam-suam kuku' }, 
+            { en: 'lukewarm', id: 'suam-suam kuku' },
             { en: 'lull', id: 'menidurkan' }, { en: 'lullaby', id: 'nina-bobok' },
             { en: 'lumber', id: 'kayu' }, { en: 'luminous', id: 'bercahaya' },
             { en: 'lunatic', id: 'gila' }, { en: 'lure', id: 'memikat' },
@@ -660,25 +649,25 @@
             { en: 'mandatory', id: 'wajib' }, { en: 'manifest', id: 'nyata' },
             { en: 'mar', id: 'mengotori' }, { en: 'maritime', id: 'maritim' },
             { en: 'marked', id: 'jelas' }, { en: 'massacre', id: 'pembunuhan masal' },
-            { en: 'masterpiece', id: 'karya besar' }, { en: 'matriculation', id: 'pendaftaran' }, 
+            { en: 'masterpiece', id: 'karya besar' }, { en: 'matriculation', id: 'pendaftaran' },
             { en: 'mature', id: 'dewasa' }, { en: 'maxim', id: 'pepatah' },
             { en: 'meager', id: 'kurus' }, { en: 'meddle', id: 'mencampuri' },
             { en: 'mediate', id: 'menengahi' }, { en: 'meek', id: 'penurut' },
-            { en: 'memorable', id: 'mudah diingat' }, 
+            { en: 'memorable', id: 'mudah diingat' },
             { en: 'menace', id: 'ancaman' }, { en: 'mend', id: 'memperbaiki' },
             { en: 'mercurial', id: 'lincah' }, { en: 'merge', id: 'menggabungkan' },
             { en: 'meritorious', id: 'berfaedah' }, { en: 'mesmerize', id: 'memikat' },
             { en: 'meteor', id: 'meteor' }, { en: 'meticulous', id: 'jelimet' },
             { en: 'mild', id: 'ringan' }, { en: 'millennia', id: 'ribuan' },
             { en: 'mingle', id: 'bergaul' }, { en: 'minuscule', id: 'amat kecil' },
-            { en: 'minute', id: 'sangat kecil' }, 
+            { en: 'minute', id: 'sangat kecil' },
             { en: 'mirth', id: 'kegembiraan' }, { en: 'misanthropic', id: 'pembenci orang' },
             { en: 'misappropriate', id: 'menyalahgunakan' }, { en: 'misdemeanor', id: 'perbuatan kurang baik' },
-            { en: 'misrepresent', id: 'memberi gambaran keliru' }, 
+            { en: 'misrepresent', id: 'memberi gambaran keliru' },
             { en: 'mock', id: 'mengejek' }, { en: 'moderate', id: 'moderat' },
             { en: 'molest', id: 'menganiaya' }, { en: 'monitor', id: 'mengamati' },
             { en: 'monotonous', id: 'membosankan' }, { en: 'monumental', id: 'monumental' },
-            { en: 'moral', id: 'moral' }, { en: 'morale', id: 'semangat juang' }, 
+            { en: 'moral', id: 'moral' }, { en: 'morale', id: 'semangat juang' },
             { en: 'morbid', id: 'mengerikan' }, { en: 'mortify', id: 'menyinggung perasaan' },
             { en: 'mournful', id: 'sedih' }, { en: 'mundane', id: 'duniawi' },
             { en: 'murky', id: 'suram' }, { en: 'mute', id: 'bisu' },
@@ -686,23 +675,23 @@
             { en: 'mythical', id: 'mitos' }, { en: 'naughty', id: 'nakal' },
             { en: 'nausea', id: 'mual' }, { en: 'neglect', id: 'pengabaian' },
             { en: 'negligible', id: 'sepele' }, { en: 'negotiate', id: 'merundingkan' },
-            { en: 'nestor', id: 'orang bijak tua' }, 
+            { en: 'nestor', id: 'orang bijak tua' },
             { en: 'nibble', id: 'menggigit' }, { en: 'nimble', id: 'gesit' },
             { en: 'nocturnal', id: 'nokturnal' }, { en: 'nonchalant', id: 'acuh tak acuh' },
             { en: 'notable', id: 'penting' }, { en: 'notify', id: 'memberitahukan' },
             { en: 'notion', id: 'gagasan' }, { en: 'notorious', id: 'terkenal jahat' },
-            { en: 'novel', id: 'baru/unik' }, 
+            { en: 'novel', id: 'baru/unik' },
             { en: 'novice', id: 'orang baru' }, { en: 'noxious', id: 'berbahaya' },
             { en: 'obese', id: 'gendut' }, { en: 'obituary', id: 'berita kematian' },
             { en: 'objective', id: 'tujuan' }, { en: 'oblique', id: 'miring' },
             { en: 'oblivious', id: 'lupa' }, { en: 'oblong', id: 'bujur' },
             { en: 'obscene', id: 'saru' }, { en: 'obscure', id: 'mengaburkan' },
-            { en: 'obsequious', id: 'menjilat' }, 
+            { en: 'obsequious', id: 'menjilat' },
             { en: 'obsolete', id: 'usang' }, { en: 'obstinate', id: 'keras kepala' },
             { en: 'obtrude', id: 'memaksakan kehendak' }, { en: 'obvious', id: 'jelas' },
             { en: 'odd', id: 'aneh' }, { en: 'odor', id: 'bau' },
             { en: 'offhand', id: 'begitu saja' }, { en: 'offspring', id: 'keturunan' },
-            { en: 'olympian', id: 'agung' }, 
+            { en: 'olympian', id: 'agung' },
             { en: 'omen', id: 'pertanda' }, { en: 'ominous', id: 'yg beralamat buruk' },
             { en: 'ooze', id: 'mengeluarkan' }, { en: 'opportune', id: 'tepat' },
             { en: 'opulent', id: 'mewah' }, { en: 'orbit', id: 'orbit' },
@@ -724,9 +713,9 @@
             { en: 'painstaking', id: 'telaten' }, { en: 'pale', id: 'pucat' },
             { en: 'paltry', id: 'remeh' }, { en: 'panacea', id: 'obat mujarab' },
             { en: 'panic', id: 'panik' }, { en: 'paramour', id: 'kekasih' },
-            { en: 'particle', id: 'partikel' }, { en: 'path', id: 'jalur' }, 
+            { en: 'particle', id: 'partikel' }, { en: 'path', id: 'jalur' },
             { en: 'patronage', id: 'perlindungan' }, { en: 'peculiar', id: 'aneh' },
-            { en: 'pedantic', id: 'sok pintar' }, 
+            { en: 'pedantic', id: 'sok pintar' },
             { en: 'penetrate', id: 'menembus' }, { en: 'penurious', id: 'kikir' },
             { en: 'percapita', id: 'perkapita' }, { en: 'perceive', id: 'melihat' },
             { en: 'perceptible', id: 'jelas' }, { en: 'perch', id: 'bertengger' },
@@ -754,17 +743,17 @@
             { en: 'preface', id: 'kata pengantar' }, { en: 'premier', id: 'perdana menteri' },
             { en: 'prerogative', id: 'hak istimewa' }, { en: 'presage', id: 'pertanda' },
             { en: 'prescribe', id: 'menentukan' }, { en: 'pressing', id: 'mendesak' },
-            { en: 'presumptuous', id: 'lancang' }, { en: 'pretense', id: 'kepura-puraan' }, 
+            { en: 'presumptuous', id: 'lancang' }, { en: 'pretense', id: 'kepura-puraan' },
             { en: 'pretext', id: 'dalih' }, { en: 'prevail', id: 'menang' },
             { en: 'prevalent', id: 'lazim' }, { en: 'prior', id: 'sebelumnya' },
             { en: 'probe', id: 'penyelidikan' }, { en: 'probity', id: 'kejujuran' },
             { en: 'proclaim', id: 'menyatakan' }, { en: 'procure', id: 'mendapatkan' },
             { en: 'prodigal', id: 'pemboros' }, { en: 'prodigious', id: 'luar biasa' },
             { en: 'profane', id: 'mencemarkan' }, { en: 'profound', id: 'mendalam' },
-            { en: 'profuse', id: 'berlimpah' }, 
+            { en: 'profuse', id: 'berlimpah' },
             { en: 'proliferate', id: 'berkembang biak' }, { en: 'prolific', id: 'produktif' },
             { en: 'prolong', id: 'memperpanjang' }, { en: 'prominent', id: 'menonjol' },
-            { en: 'promiscuous', id: 'serampangan (seksual)' }, 
+            { en: 'promiscuous', id: 'serampangan (seksual)' },
             { en: 'prompt', id: 'mendorong' }, { en: 'pronounced', id: 'jelas' },
             { en: 'prophesy', id: 'bernubuat' }, { en: 'proportional', id: 'sebanding' },
             { en: 'propriety', id: 'kesopanan' }, { en: 'proscribe', id: 'mengharamkan' },
@@ -772,18 +761,18 @@
             { en: 'protracted', id: 'larut' }, { en: 'provenance', id: 'asal' },
             { en: 'provisional', id: 'sementara' }, { en: 'provoke', id: 'memprovokasi' },
             { en: 'prow', id: 'haluan kapal' }, { en: 'prudent', id: 'bijaksana' },
-            { en: 'pseudonym', id: 'nama samaran' }, { en: 'pugnacious', id: 'suka berkelahi' }, 
+            { en: 'pseudonym', id: 'nama samaran' }, { en: 'pugnacious', id: 'suka berkelahi' },
             { en: 'pulverize', id: 'menghancurleburkan' }, { en: 'pungent', id: 'tajam' },
             { en: 'pursue', id: 'mengejar' }, { en: 'puzzling', id: 'membingungkan' },
-            { en: 'quaint', id: 'aneh tapi menarik' }, 
+            { en: 'quaint', id: 'aneh tapi menarik' },
             { en: 'quake', id: 'gempa' }, { en: 'quandary', id: 'dilema' },
-            { en: 'quarrel', id: 'bertengkar' }, { en: 'quash', id: 'membatalkan' }, 
+            { en: 'quarrel', id: 'bertengkar' }, { en: 'quash', id: 'membatalkan' },
             { en: 'quench', id: 'memuaskan' }, { en: 'query', id: 'pertanyaan' },
             { en: 'quest', id: 'pencarian' }, { en: 'quicksilver', id: 'air raksa' },
             { en: 'quote', id: 'mengutip' }, { en: 'radiant', id: 'berseri-seri' },
             { en: 'radical', id: 'radikal' }, { en: 'ragged', id: 'compang-camping' },
             { en: 'raid', id: 'serangan' }, { en: 'random', id: 'acak' },
-            { en: 'range', id: 'jarak' }, { en: 'rash', id: 'gegabah' }, 
+            { en: 'range', id: 'jarak' }, { en: 'rash', id: 'gegabah' },
             { en: 'ration', id: 'jatah' }, { en: 'raw', id: 'mentah' },
             { en: 'raze', id: 'meruntuhkan' }, { en: 'rebellion', id: 'pemberontakan' },
             { en: 'recede', id: 'surut' }, { en: 'reception', id: 'penerimaan' },
@@ -806,12 +795,12 @@
             { en: 'remote', id: 'terpencil' }, { en: 'remunerate', id: 'menggaji' },
             { en: 'render', id: 'memberikan' }, { en: 'renounce', id: 'meninggalkan' },
             { en: 'renowned', id: 'terkenal' }, { en: 'repeal', id: 'mencabut' },
-            { en: 'repel', id: 'mengusir' }, { en: 'repercussion', id: 'dampak' }, 
+            { en: 'repel', id: 'mengusir' }, { en: 'repercussion', id: 'dampak' },
             { en: 'replenish', id: 'mengisi kembali' }, { en: 'reproach', id: 'mencela' },
             { en: 'reprobate', id: 'terkutuk' }, { en: 'reproduce', id: 'meniru' },
             { en: 'reprove', id: 'menegur' }, { en: 'repugnance', id: 'kebencian' },
             { en: 'repute', id: 'reputasi' }, { en: 'rescind', id: 'membatalkan' },
-            { en: 'resent', id: 'marah' }, { en: 'reserved', id: 'pendiam' }, 
+            { en: 'resent', id: 'marah' }, { en: 'reserved', id: 'pendiam' },
             { en: 'residual', id: 'sisa' }, { en: 'resolute', id: 'tegas' },
             { en: 'resound', id: 'menggaung' }, { en: 'restless', id: 'gelisah' },
             { en: 'resume', id: 'mulai lagi' }, { en: 'resurrection', id: 'kebangkitan' },
@@ -826,19 +815,19 @@
             { en: 'ripe', id: 'matang' }, { en: 'risky', id: 'berisiko' },
             { en: 'roam', id: 'berkeliaran' }, { en: 'rotundity', id: 'kegendutan' },
             { en: 'rough', id: 'kasar' }, { en: 'route', id: 'rute' },
-            { en: 'rudiment', id: 'dasar-dasar' }, 
+            { en: 'rudiment', id: 'dasar-dasar' },
             { en: 'rudimentary', id: 'belum sempurna' }, { en: 'rugged', id: 'kasar' },
             { en: 'rummage', id: 'menggeledah' }, { en: 'rumor', id: 'desas-desus' },
             { en: 'rural', id: 'pedesaan' }, { en: 'ruthless', id: 'kejam' },
-            { en: 'salvage', id: 'menyelamatkan' }, { en: 'sanction', id: 'izin atau hukuman' }, 
+            { en: 'salvage', id: 'menyelamatkan' }, { en: 'sanction', id: 'izin atau hukuman' },
             { en: 'sanctuary', id: 'suaka' }, { en: 'sanguine', id: 'optimis' },
-            { en: 'saturate', id: 'jenuh' }, { en: 'saucy', id: 'kurang ajar' }, 
+            { en: 'saturate', id: 'jenuh' }, { en: 'saucy', id: 'kurang ajar' },
             { en: 'scale', id: 'skala' }, { en: 'scan', id: 'mengamati' },
             { en: 'scant', id: 'sedikit' }, { en: 'scarce', id: 'langka' },
             { en: 'scatter', id: 'menyebarkan' }, { en: 'scattered', id: 'tersebar' },
             { en: 'scent', id: 'bau' }, { en: 'scholarly', id: 'ilmiah' },
             { en: 'scope', id: 'cakupan' }, { en: 'scorch', id: 'menghanguskan' },
-            { en: 'scorn', id: 'cemooh' }, { en: 'scrap', id: 'sisa' }, 
+            { en: 'scorn', id: 'cemooh' }, { en: 'scrap', id: 'sisa' },
             { en: 'scribble', id: 'tulisan cakar ayam' }, { en: 'scrupulous', id: 'teliti' },
             { en: 'scrutinize', id: 'menyimak' }, { en: 'seasoned', id: 'berpengalaman' },
             { en: 'secluded', id: 'terpencil' }, { en: 'secondhand', id: 'bekas' },
@@ -877,27 +866,27 @@
             { en: 'spirited', id: 'berjiwa' }, { en: 'splash', id: 'guyuran' },
             { en: 'splendid', id: 'hebat' }, { en: 'splice', id: 'sambatan' },
             { en: 'spoil', id: 'merusak' }, { en: 'sporadic', id: 'sporadis' },
-            { en: 'spot', id: 'tempat' }, { en: 'spouse', id: 'pasangan' }, 
+            { en: 'spot', id: 'tempat' }, { en: 'spouse', id: 'pasangan' },
             { en: 'sprout', id: 'tunas' }, { en: 'spur', id: 'memacu' },
             { en: 'spurious', id: 'palsu' }, { en: 'squamous', id: 'skuamosa' },
             { en: 'squander', id: 'memboroskan' }, { en: 'stable', id: 'stabil' },
             { en: 'stagnant', id: 'tergenang' }, { en: 'stain', id: 'noda' },
             { en: 'stale', id: 'basi' }, { en: 'stall', id: 'kios' },
-            { en: 'stately', id: 'megah' }, { en: 'stationary', id: 'diam' }, 
+            { en: 'stately', id: 'megah' }, { en: 'stationary', id: 'diam' },
             { en: 'statusquo', id: 'statusquo' }, { en: 'staunch', id: 'setia' },
             { en: 'stealthy', id: 'diam-diam' }, { en: 'steep', id: 'curam' },
-            { en: 'stentorian', id: 'nyaring' }, { en: 'stern', id: 'tegas' }, 
-            { en: 'stifle', id: 'menahan' }, 
+            { en: 'stentorian', id: 'nyaring' }, { en: 'stern', id: 'tegas' },
+            { en: 'stifle', id: 'menahan' },
             { en: 'stifling', id: 'gerah' }, { en: 'still', id: 'masih' },
-            { en: 'stoic', id: 'sangat tabah' }, { en: 'stout', id: 'gemuk/kuat' }, 
+            { en: 'stoic', id: 'sangat tabah' }, { en: 'stout', id: 'gemuk/kuat' },
             { en: 'strenuous', id: 'berat' }, { en: 'stretch', id: 'meregang' },
             { en: 'strife', id: 'perselisihan' }, { en: 'strive', id: 'berjuang' },
             { en: 'struggle', id: 'berjuang' }, { en: 'stubborn', id: 'keras kepala' },
-            { en: 'stumble', id: 'tersandung' }, { en: 'stun', id: 'membuat pingsan/terkejut' }, 
+            { en: 'stumble', id: 'tersandung' }, { en: 'stun', id: 'membuat pingsan/terkejut' },
             { en: 'stupendous', id: 'menakjubkan' }, { en: 'sturdy', id: 'kuat' },
-            { en: 'sublime', id: 'agung' }, 
+            { en: 'sublime', id: 'agung' },
             { en: 'submerge', id: 'merendamkan' }, { en: 'subsequent', id: 'berikut' },
-            { en: 'subside', id: 'reda' }, { en: 'subsidiary', id: 'anak perusahaan' }, 
+            { en: 'subside', id: 'reda' }, { en: 'subsidiary', id: 'anak perusahaan' },
             { en: 'substantial', id: 'besar' }, { en: 'subterranean', id: 'di bawah tanah' },
             { en: 'subtle', id: 'halus' }, { en: 'succumb', id: 'mengalah' },
             { en: 'sullen', id: 'cemberut' }, { en: 'summit', id: 'puncak' },
@@ -912,18 +901,18 @@
             { en: 'swivel', id: 'putar' }, { en: 'sybaritic', id: 'termanja' },
             { en: 'synagogue', id: 'sinagoga' }, { en: 'synopsis', id: 'ringkasan' },
             { en: 'synthesize', id: 'mempersatukan' }, { en: 'taciturn', id: 'pendiam' },
-            { en: 'tact', id: 'kebijaksanaan' }, { en: 'tactic', id: 'taktik' }, 
+            { en: 'tact', id: 'kebijaksanaan' }, { en: 'tactic', id: 'taktik' },
             { en: 'taint', id: 'mencemari' }, { en: 'tale', id: 'kisah' },
             { en: 'tame', id: 'menjinakkan' }, { en: 'tamper', id: 'merusakkan' },
             { en: 'tangle', id: 'kekusutan' }, { en: 'tantalize', id: 'menggiurkan' },
             { en: 'tantamount', id: 'sama' }, { en: 'tardy', id: 'terlambat' },
-            { en: 'tarnish', id: 'menodai' }, { en: 'tart', id: 'asam (rasa)' }, 
+            { en: 'tarnish', id: 'menodai' }, { en: 'tart', id: 'asam (rasa)' },
             { en: 'taunt', id: 'mengejek' }, { en: 'tautology', id: 'ulangan yg tdk berguna' },
             { en: 'tawdry', id: 'menyolok' }, { en: 'taxonomy', id: 'taksonomi' },
             { en: 'tease', id: 'menggoda' }, { en: 'tedious', id: 'membosankan' },
             { en: 'telling', id: 'jitu' }, { en: 'temperate', id: 'sedang' },
             { en: 'tempting', id: 'gurih' }, { en: 'tender', id: 'lembut' },
-            { en: 'tenor', id: 'makna umum' }, 
+            { en: 'tenor', id: 'makna umum' },
             { en: 'tentative', id: 'sementara' }, { en: 'tepid', id: 'hangat-hangat kuku' },
             { en: 'ternary', id: 'terner' }, { en: 'tether', id: 'menambatkan' },
             { en: 'thaw', id: 'mencair' }, { en: 'thermal', id: 'panas' },
@@ -939,14 +928,14 @@
             { en: 'towering', id: 'yg meluap-luap' }, { en: 'toxic', id: 'racun' },
             { en: 'trailblazer', id: 'perintis' }, { en: 'trait', id: 'sifat' },
             { en: 'trajectory', id: 'lintasan' }, { en: 'tranquility', id: 'ketenangan' },
-            { en: 'transmute', id: 'mengubah' }, 
+            { en: 'transmute', id: 'mengubah' },
             { en: 'transparent', id: 'jelas' }, { en: 'transpose', id: 'mengubah urutan' },
             { en: 'traverse', id: 'melintasi' }, { en: 'treacherous', id: 'berbahaya' },
             { en: 'tremendous', id: 'dahsyat' }, { en: 'tremor', id: 'getaran' },
             { en: 'trepidation', id: 'kegemparan' }, { en: 'tribunal', id: 'pengadilan' },
-            { en: 'trickle', id: 'menetes' }, 
+            { en: 'trickle', id: 'menetes' },
             { en: 'trigger', id: 'mencetuskan' }, { en: 'triumph', id: 'kemenangan' },
-            { en: 'trivial', id: 'sepele' }, { en: 'trying', id: 'sulit' }, 
+            { en: 'trivial', id: 'sepele' }, { en: 'trying', id: 'sulit' },
             { en: 'tug', id: 'menariknya' }, { en: 'tumble', id: 'jatuh' },
             { en: 'tumultuous', id: 'rusuh' }, { en: 'turbulent', id: 'bergolak' },
             { en: 'turmoil', id: 'kekacauan' }, { en: 'twinkle', id: 'berkelip' },
@@ -957,11 +946,11 @@
             { en: 'undergo', id: 'menjalani' }, { en: 'underlying', id: 'pokok' },
             { en: 'underscore', id: 'menggarisbawahi' }, { en: 'undertake', id: 'melakukan' },
             { en: 'undulate', id: 'yg berombak-ombak' }, { en: 'unerring', id: 'tepat' },
-            { en: 'unexpendable', id: 'tidak dapat dikorbankan' }, 
+            { en: 'unexpendable', id: 'tidak dapat dikorbankan' },
             { en: 'ungainly', id: 'kaku' }, { en: 'uniform', id: 'seragam' },
             { en: 'unilateral', id: 'sepihak' }, { en: 'unique', id: 'unik' },
             { en: 'universal', id: 'universal' }, { en: 'unquenchable', id: 'tak terpadamkan' },
-            { en: 'unruly', id: 'susah diatur' }, 
+            { en: 'unruly', id: 'susah diatur' },
             { en: 'unscathed', id: 'tanpa cedera' }, { en: 'unsound', id: 'kurang sehat' },
             { en: 'upheaval', id: 'pergolakan' }, { en: 'uphold', id: 'menegakkan' },
             { en: 'upkeep', id: 'pemeliharaan' }, { en: 'uproar', id: 'gempar' },
@@ -975,17 +964,17 @@
             { en: 'vanguard', id: 'garda depan' }, { en: 'vanish', id: 'lenyap' },
             { en: 'vanity', id: 'kesombongan' }, { en: 'variable', id: 'variabel' },
             { en: 'variation', id: 'variasi' }, { en: 'vast', id: 'luas' },
-            { en: 'vaunt', id: 'membual' }, 
+            { en: 'vaunt', id: 'membual' },
             { en: 'vehemence', id: 'gelora' }, { en: 'vein', id: 'pembuluh darah' },
             { en: 'venerate', id: 'memuliakan' }, { en: 'venereal', id: 'kelamin' },
             { en: 'venomous', id: 'berbisa' }, { en: 'venturesome', id: 'berani' },
-            { en: 'venue', id: 'tempat' }, { en: 'verbose', id: 'bertele-tele' }, 
+            { en: 'venue', id: 'tempat' }, { en: 'verbose', id: 'bertele-tele' },
             { en: 'verge', id: 'ambang' }, { en: 'verify', id: 'memeriksa' },
             { en: 'versatile', id: 'serba guna' }, { en: 'vessel', id: 'kapal' },
-            { en: 'vex', id: 'menyusahkan' }, { en: 'viable', id: 'dapat hidup/dilakukan' }, 
+            { en: 'vex', id: 'menyusahkan' }, { en: 'viable', id: 'dapat hidup/dilakukan' },
             { en: 'vicinity', id: 'sekitarnya' }, { en: 'vie', id: 'bertanding' },
             { en: 'vigilance', id: 'kewaspadaan' }, { en: 'vigorous', id: 'kuat' },
-            { en: 'villainous', id: 'jahat' }, 
+            { en: 'villainous', id: 'jahat' },
             { en: 'vindicate', id: 'membenarkan' }, { en: 'visceral', id: 'mendalam' },
             { en: 'vital', id: 'vital' }, { en: 'vivid', id: 'jelas' },
             { en: 'vogue', id: 'mode' }, { en: 'volatile', id: 'volatil' },
@@ -996,13 +985,13 @@
             { en: 'wail', id: 'meratap' }, { en: 'walkout', id: 'pemogokan' },
             { en: 'wan', id: 'pucat' }, { en: 'wander', id: 'mengembara' },
             { en: 'wane', id: 'menyusut' }, { en: 'ward', id: 'bangsal' },
-            { en: 'ware', id: 'barang dagangan' }, 
+            { en: 'ware', id: 'barang dagangan' },
             { en: 'warp', id: 'melengkung' }, { en: 'wary', id: 'waspada' },
             { en: 'waxy', id: 'lunak' }, { en: 'weary', id: 'lelah' },
             { en: 'well-to-do', id: 'orang kaya' }, { en: 'wholesome', id: 'sehat' },
             { en: 'wicked', id: 'jahat' }, { en: 'widen', id: 'memperluas' },
-            { en: 'widespread', id: 'meluas' }, { en: 'wile', id: 'tipu muslihat' }, 
-            { en: 'wily', id: 'licik' }, { en: 'winsome', id: 'menarik' }, 
+            { en: 'widespread', id: 'meluas' }, { en: 'wile', id: 'tipu muslihat' },
+            { en: 'wily', id: 'licik' }, { en: 'winsome', id: 'menarik' },
             { en: 'wise', id: 'bijaksana' }, { en: 'withdraw', id: 'menarik' },
             { en: 'wither', id: 'melayu' }, { en: 'withhold', id: 'menahan' },
             { en: 'withstand', id: 'menahan' }, { en: 'witty', id: 'jenaka' },
@@ -1015,15 +1004,21 @@
 
         let questions = [];
 
+        rawVocabularyList.sort((a, b) => {
+            const enA = a.en.toLowerCase();
+            const enB = b.en.toLowerCase();
+            if (enA < enB) return -1;
+            if (enA > enB) return 1;
+            return 0;
+        });
+
         function generateQuestions() {
             const allIndonesianTranslations = rawVocabularyList.map(item => item.id);
-            questions = []; 
-
+            questions = [];
             rawVocabularyList.forEach(vocabItem => {
                 const correctAnswer = vocabItem.id;
                 const distractors = [];
-
-                let attempts = 0; 
+                let attempts = 0;
                 while (distractors.length < 3 && attempts < allIndonesianTranslations.length * 2) {
                     const randomIndex = Math.floor(Math.random() * allIndonesianTranslations.length);
                     const potentialDistractor = allIndonesianTranslations[randomIndex];
@@ -1036,72 +1031,184 @@
                     const fallbackOptions = ["opsi lain A", "opsi lain B", "opsi lain C", "opsi lain D", "opsi lain E", "opsi lain F"];
                     let fallbackIndex = 0;
                     let safetyNet = 0;
-                    while(distractors.length < 3 && safetyNet < fallbackOptions.length * 3) { // Increased safetyNet
-                        const fbOption = fallbackOptions[fallbackIndex % fallbackOptions.length] + `_${distractors.length}${Math.floor(Math.random()*100)}`; 
+                    while(distractors.length < 3 && safetyNet < fallbackOptions.length * 3) {
+                        const fbOption = fallbackOptions[fallbackIndex % fallbackOptions.length] + `_${distractors.length}${Math.floor(Math.random()*100)}`;
                         if (fbOption !== correctAnswer && !distractors.includes(fbOption)) {
                              distractors.push(fbOption);
                         }
                         fallbackIndex++;
                         safetyNet++;
                     }
-                     if(distractors.length < 3) { // Ultimate fallback for very small unique translation lists
-                        for(let i=0; i<3-distractors.length; i++){
-                           distractors.push("pilihan default " + (i+1) + Math.random());
+                     if(distractors.length < 3) {
+                        for(let i=0; i < (3-distractors.length); i++){
+                            distractors.push("pilihan default " + (i+1+distractors.length) + Math.random().toString(36).substring(7));
                         }
                      }
                 }
-
                 const answerOptions = [
                     { text: correctAnswer, correct: true },
                     { text: distractors[0], correct: false },
                     { text: distractors[1], correct: false },
                     { text: distractors[2], correct: false }
                 ];
-
                 questions.push({
                     question: vocabItem.en,
-                    answers: answerOptions 
+                    answers: answerOptions
                 });
             });
         }
 
-        generateQuestions(); 
+        generateQuestions();
 
-        startButton.addEventListener('click', startGame);
-        restartButton.addEventListener('click', startGame);
+        function saveProgress() {
+            if (!questionContainerElement.classList.contains('hide') && orderedQuestions && currentQuestionIndex < orderedQuestions.length) {
+                 const progress = {
+                    currentQuestionIndex: currentQuestionIndex,
+                    score: score,
+                    orderedQuestions: orderedQuestions
+                };
+                localStorage.setItem('quizProgress', JSON.stringify(progress));
+            }
+        }
 
-        function startGame() {
-            clearTimeout(questionTimeout); 
-            startButton.classList.add('hide');
-            resultContainerElement.classList.add('hide');
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('quizProgress');
+            if (savedProgress) {
+                try {
+                    const progressData = JSON.parse(savedProgress);
+                    if (progressData && typeof progressData.currentQuestionIndex === 'number' &&
+                        typeof progressData.score === 'number' && Array.isArray(progressData.orderedQuestions) &&
+                        progressData.orderedQuestions.length > 0 &&
+                        progressData.currentQuestionIndex < progressData.orderedQuestions.length &&
+                        progressData.orderedQuestions.length === questions.length) { // Validasi tambahan: jumlah soal harus sama
+                        return progressData;
+                    } else {
+                        clearProgress();
+                        return null;
+                    }
+                } catch (e) {
+                    console.error("Error parsing saved progress:", e);
+                    clearProgress();
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        function clearProgress() {
+            localStorage.removeItem('quizProgress');
+        }
+
+        prev50Button.addEventListener('click', () => navigateQuestions(-JUMP_AMOUNT));
+        next50Button.addEventListener('click', () => navigateQuestions(JUMP_AMOUNT));
+
+        function navigateQuestions(amount) {
+            clearTimeout(questionTimeout);
+            if (!orderedQuestions || orderedQuestions.length === 0) return;
+
+            let newIndex = currentQuestionIndex + amount;
+            if (newIndex < 0) newIndex = 0;
+            else if (newIndex >= orderedQuestions.length) newIndex = orderedQuestions.length - 1;
+
+            if (newIndex !== currentQuestionIndex) {
+                currentQuestionIndex = newIndex;
+                setNextQuestion();
+            } else {
+                updateSkipButtonStates();
+            }
+        }
+
+        function updateSkipButtonStates() {
+            if (!orderedQuestions || orderedQuestions.length === 0 || questionContainerElement.classList.contains('hide')) {
+                skipNavigationControls.classList.add('hide');
+                if(prev50Button) prev50Button.disabled = true;
+                if(next50Button) next50Button.disabled = true;
+                return;
+            }
+            skipNavigationControls.classList.remove('hide');
+            prev50Button.disabled = currentQuestionIndex === 0;
+            next50Button.disabled = currentQuestionIndex === (orderedQuestions.length - 1);
+
+            if (orderedQuestions.length <= 1) {
+                prev50Button.disabled = true;
+                next50Button.disabled = true;
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const savedData = loadProgress();
+            startButton.innerText = 'Mulai';
+            completionMessageElement.classList.add('hide');
+            if (savedData) {
+                continueButton.classList.remove('hide');
+            } else {
+                continueButton.classList.add('hide');
+            }
+            if (questionContainerElement.classList.contains('hide')) {
+                initialControls.classList.remove('hide');
+                skipNavigationControls.classList.add('hide');
+            } else {
+                 initialControls.classList.add('hide');
+            }
+        });
+
+        startButton.addEventListener('click', () => startGame(false));
+        continueButton.addEventListener('click', () => startGame(true));
+
+        function startGame(isContinuing = false) {
+            clearTimeout(questionTimeout);
+            completionMessageElement.classList.add('hide');
+            if (!isContinuing) {
+                startButton.innerText = 'Mulai';
+            }
+            initialControls.classList.add('hide');
             questionContainerElement.classList.remove('hide');
             questionCounterElement.classList.remove('hide');
-            
-            orderedQuestions = questions; 
-            currentQuestionIndex = 0;
-            score = 0;
+
+            const savedData = loadProgress();
+            if (isContinuing && savedData && savedData.orderedQuestions && savedData.orderedQuestions.length === questions.length) {
+                orderedQuestions = savedData.orderedQuestions; // Gunakan urutan yang disimpan (yang seharusnya sudah urut)
+                currentQuestionIndex = savedData.currentQuestionIndex;
+                score = savedData.score;
+            } else {
+                clearProgress();
+                // Gunakan urutan soal langsung dari 'questions' yang sudah diurutkan secara abjad
+                // Tidak ada pengacakan di sini.
+                orderedQuestions = [...questions]; // Membuat salinan array questions yang sudah terurut
+                currentQuestionIndex = 0;
+                score = 0;
+            }
+
+            if (!orderedQuestions || orderedQuestions.length === 0) {
+                showResults();
+                completionMessageElement.innerText = "Tidak ada soal untuk ditampilkan.";
+                completionMessageElement.style.color = "#dc3545";
+                completionMessageElement.classList.remove('hide');
+                startButton.innerText = 'Mulai';
+                return;
+            }
             setNextQuestion();
         }
 
         function setNextQuestion() {
-            resetState(); 
-            if (currentQuestionIndex < orderedQuestions.length) {
+            resetState();
+            if (orderedQuestions && currentQuestionIndex < orderedQuestions.length) {
                 questionCounterElement.innerText = `${currentQuestionIndex + 1} / ${orderedQuestions.length}`;
                 showQuestion(orderedQuestions[currentQuestionIndex]);
-                
+                saveProgress();
                 if (document.activeElement && typeof document.activeElement.blur === 'function') {
                     document.activeElement.blur();
                 }
-
             } else {
                 showResults();
             }
+            updateSkipButtonStates();
         }
 
         function showQuestion(questionData) {
             questionElement.innerText = questionData.question;
-            const shuffledAnswers = questionData.answers.sort(() => Math.random() - 0.5);
-
+            answerButtonsElement.innerHTML = '';
+            const shuffledAnswers = [...questionData.answers].sort(() => Math.random() - 0.5); // Pilihan jawaban tetap diacak
             shuffledAnswers.forEach(answer => {
                 const button = document.createElement('button');
                 button.innerText = answer.text;
@@ -1115,8 +1222,7 @@
         }
 
         function resetState() {
-            clearTimeout(questionTimeout); 
-            clearStatusClass(document.body);
+            clearTimeout(questionTimeout);
             while (answerButtonsElement.firstChild) {
                 answerButtonsElement.removeChild(answerButtonsElement.firstChild);
             }
@@ -1125,29 +1231,26 @@
         function selectAnswer(e) {
             const selectedButton = e.target;
             const correct = selectedButton.dataset.correct === 'true';
-
-            if (correct) {
-                score++;
-            }
-
+            if (correct) { score++; }
             Array.from(answerButtonsElement.children).forEach(button => {
                 setStatusClass(button, button.dataset.correct === 'true');
                 button.disabled = true;
             });
-            
+            saveProgress();
             questionTimeout = setTimeout(() => {
-                currentQuestionIndex++;
-                setNextQuestion();
-            }, 1500); 
+                if (orderedQuestions && currentQuestionIndex < orderedQuestions.length -1) {
+                    currentQuestionIndex++;
+                    setNextQuestion();
+                } else if (orderedQuestions && currentQuestionIndex === orderedQuestions.length -1) {
+                    showResults();
+                }
+            }, 1500);
         }
 
         function setStatusClass(element, correct) {
             clearStatusClass(element);
-            if (correct) {
-                element.classList.add('correct');
-            } else {
-                element.classList.add('wrong');
-            }
+            if (correct) { element.classList.add('correct'); }
+            else { element.classList.add('wrong'); }
         }
 
         function clearStatusClass(element) {
@@ -1156,11 +1259,17 @@
         }
 
         function showResults() {
-            clearTimeout(questionTimeout); 
+            clearTimeout(questionTimeout);
             questionContainerElement.classList.add('hide');
             questionCounterElement.classList.add('hide');
-            resultContainerElement.classList.remove('hide');
-            scoreElement.innerText = `${score} / ${questions.length}`;
+            skipNavigationControls.classList.add('hide');
+            clearProgress();
+            completionMessageElement.innerText = "Selamat Kuis Sudah Selesai 🎉";
+            completionMessageElement.style.color = "#28a745";
+            completionMessageElement.classList.remove('hide');
+            startButton.innerText = 'Ulangi Kuis';
+            initialControls.classList.remove('hide');
+            continueButton.classList.add('hide');
         }
     </script>
 </body>
