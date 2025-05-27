@@ -2,7 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Pengetahuan Arduino Dasar</title> <style>
+    <title>Kuis Pengetahuan Arduino Dasar</title>
+    <style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -11,7 +12,7 @@
             min-height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
-            padding: 20px; /* Menambahkan padding ke body bisa berguna untuk layar kecil */
+            padding: 20px;
             box-sizing: border-box;
         }
 
@@ -57,13 +58,13 @@
 
         .btn-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Selalu 2 kolom untuk jawaban */
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .btn {
-            background-color: #007bff; /* Default button color */
+            background-color: #007bff;
             color: white;
             border: none;
             padding: 12px 15px;
@@ -71,85 +72,48 @@
             cursor: pointer;
             font-size: 1em;
             transition: background-color 0.2s ease, box-shadow 0.2s ease;
-            word-wrap: break-word; /* Baik untuk teks panjang */
+            word-wrap: break-word;
             min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            outline: none; /* Sebaiknya biarkan outline untuk aksesibilitas atau style custom focus */
+            outline: none;
             font-weight: bold;
         }
 
-        /* SARAN: Kurangi !important. Urutkan CSS berdasarkan spesifisitas atau urutan kemunculan. */
-        /* Contoh penataan ulang (mungkin perlu penyesuaian lebih lanjut): */
-
-        /* Default hover/focus (kecuali untuk tombol yang sudah dikoreksi/salah atau tombol khusus) */
-        .btn:not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q):hover:not([disabled]) {
-            background-color: #0056b3; /* Warna hover default */
+        .btn:not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q) { background-color: #007bff; }
+        .btn:not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q):focus {
+            background-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
         }
-        .btn:not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q):focus:not([disabled]) {
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Focus default */
-        }
-
-        /* Tombol Jawaban Benar */
-        .btn.correct { background-color: #28a745; box-shadow: none; }
-        .btn.correct:hover:not([disabled]) { background-color: #218838; }
-        .btn.correct:focus:not([disabled]) {
-            background-color: #28a745;
-            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.6);
+        .btn:not([disabled]):not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q):hover {}
+        .btn:not([disabled]):not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q):focus:hover {
+            background-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
         }
 
-        /* Tombol Jawaban Salah */
-        .btn.wrong { background-color: #dc3545; box-shadow: none; }
-        .btn.wrong:hover:not([disabled]) { background-color: #c82333; }
-        .btn.wrong:focus:not([disabled]) {
-            background-color: #dc3545;
-            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.6);
+        .btn.correct { background-color: #28a745 !important; box-shadow: none; }
+        .btn.correct:hover { background-color: #218838 !important; }
+        .btn.correct:focus {
+            background-color: #28a745 !important;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.6) !important;
         }
 
-        /* Tombol Skip & Navigasi Khusus */
-        .skip-btn {
-            background-color: #17a2b8; /* Ganti warna agar beda dari jawaban benar, misal info blue */
-            color: white;
-            padding: 8px 12px;
-            font-size: 0.9em;
-            min-width: 80px;
-        }
-        .skip-btn:hover:not([disabled]) {
-            background-color: #138496; /* Darker info blue */
-        }
-        .skip-btn:disabled {
-            background-color: #a1d2db; /* Light info blue */
-            color: #e9f5ec;
+        .btn.wrong { background-color: #dc3545 !important; box-shadow: none; }
+        .btn.wrong:hover { background-color: #c82333 !important; }
+        .btn.wrong:focus {
+            background-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.6) !important;
         }
 
-        .btn-prev-q {
-            background-color: #ffc107; /* Ganti warna, misal warning yellow */
-            color: #212529; /* Teks gelap agar kontras */
-            padding: 8px 12px;
-            font-size: 0.9em;
-            min-width: 80px;
-        }
-        .btn-prev-q:hover:not([disabled]) {
-            background-color: #e0a800; /* Darker warning yellow */
-        }
-        .btn-prev-q:disabled {
-            background-color: #ffeeba; /* Light warning yellow */
-            color: #666666;
-        }
-        
-        /* Generic Disabled State (jika tidak ada style disabled khusus) */
-        /* Ini akan berlaku untuk tombol jawaban setelah dijawab, dan tombol start/continue jika disabled */
         .btn:disabled {
             cursor: not-allowed;
             opacity: 0.65;
         }
-        /* Style untuk tombol jawaban (bukan skip/prev) yang disabled TAPI BUKAN karena sudah dikoreksi (correct/wrong) */
-        /* Ini akan menimpa background .btn jika tombol jawaban belum dipilih tapi sudah disabled karena alasan lain (jarang terjadi di flow ini)*/
-        /* Atau untuk start/continue button jika disabled */
+        /* Adjusted to not conflict with new button's disabled state if it's not a skip-btn or answer btn */
         .btn:disabled:not(.correct):not(.wrong):not(.skip-btn):not(.btn-prev-q) {
-             background-color: #6c757d; /* Warna abu-abu untuk disabled umum */
-             color: #ccc;
+            background-color: #6c757d !important;
+            color: #ccc !important;
         }
 
 
@@ -160,17 +124,55 @@
         }
 
         #skip-navigation-controls {
-            justify-content: space-between;
+            justify-content: space-between; /* Adjusted to space-around or similar if needed for 3 buttons */
             margin-top: 40px;
             margin-bottom: 10px;
         }
 
-        .hide { display: none !important; } /* !important di sini mungkin OK untuk utility class */
+        .skip-btn { /* This style is for prev-50 and next-50 */
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            min-width: 80px; /* Ensures same width for all skip-type buttons */
+        }
+        .skip-btn:hover {
+            background-color: #218838; /* Darker Green */
+            color: white;
+        }
+        .skip-btn:disabled { /* Default disabled for green skip buttons */
+            background-color: #a3d8b0 !important;
+            color: #e9f5ec !important;
+            /* cursor: not-allowed; is inherited from .btn:disabled */
+            /* opacity: 0.65; is inherited from .btn:disabled */
+        }
+
+        /* New button style for "Previous Question" */
+        .btn-prev-q {
+            background-color: #5F9EA0; /* CadetBlue - "biru terang" */
+            color: white; /* Text color */
+            padding: 8px 12px; /* Same padding as skip-btn */
+            font-size: 0.9em; /* Same font size as skip-btn */
+            min-width: 80px; /* Same min-width as skip-btn */
+        }
+        .btn-prev-q:hover:not([disabled]) {
+            background-color: #4682B4; /* SteelBlue - darker for hover */
+            color: white;
+        }
+        .btn-prev-q:disabled {
+            background-color: #B0C4DE !important; /* LightSteelBlue - for disabled state */
+            color: #666666 !important; /* Darker text for readability on light blue */
+            /* opacity will be applied by .btn:disabled */
+        }
+
+
+        .hide { display: none !important; }
     </style>
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Kuis Kosakata Dasar</h1> <p id="completion-message" class="hide">Selamat Kuis Sudah Selesai 🎉</p>
+        <h1>Pengetahuan Arduino Dasar</h1>
+        <p id="completion-message" class="hide">Selamat Kuis Sudah Selesai 🎉</p>
         <div id="initial-controls" class="controls">
             <button id="start-btn" class="btn">Mulai</button>
             <button id="continue-btn" class="btn hide">Lanjutkan</button>
@@ -179,10 +181,10 @@
         <div id="question-container" class="hide">
             <div id="question">Kata Bahasa Inggris</div>
             <div id="answer-buttons" class="btn-grid">
-                </div>
+            </div>
             <div id="skip-navigation-controls" class="controls hide">
                 <button id="prev-50-btn" class="btn skip-btn">&laquo; 50</button>
-                <button id="prev-question-btn" class="btn btn-prev-q">&lt;</button><button id="next-50-btn" class="btn skip-btn">50 &raquo;</button>
+                <button id="prev-question-btn" class="btn btn-prev-q">&lt;</button> <button id="next-50-btn" class="btn skip-btn">50 &raquo;</button>
             </div>
         </div>
     </div>
@@ -199,7 +201,7 @@
 
         const skipNavigationControls = document.getElementById('skip-navigation-controls');
         const prev50Button = document.getElementById('prev-50-btn');
-        const prevQuestionButton = document.getElementById('prev-question-btn');
+        const prevQuestionButton = document.getElementById('prev-question-btn'); // Referensi untuk tombol baru
         const next50Button = document.getElementById('next-50-btn');
         const JUMP_AMOUNT = 50;
 
@@ -207,26 +209,148 @@
         let score = 0;
         let questionTimeout;
 
-        // Daftar kata mentah (Inggris: Indonesia)
-        // SARAN: Pastikan daftar ini cukup panjang dan beragam untuk kualitas kuis yang baik.
+        // Daftar kata mentah dari PDF (Inggris: Indonesia) - Total 1580 kata
         const rawVocabularyList = [
-            // Isi dibawah sini yah
+            // Kosakata 1-308 (dari PDF pertama)disini yahhhhh
+        // Set 1: 100 Pertanyaan Elektronika Dasar
+
             { en: 'abandon', id: 'meninggalkan' }, { en: 'abate', id: 'mereda' },
             { en: 'abbreviation', id: 'singkatan' }, { en: 'abduct', id: 'menculik' },
             { en: 'abhor', id: 'jijik' }, { en: 'abject', id: 'hina' },
             { en: 'able', id: 'sanggup' }, { en: 'abolish', id: 'menghapuskan' },
             { en: 'abominate', id: 'merasa jijik' }, { en: 'abort', id: 'menggugurkan' },
             { en: 'abrupt', id: 'tiba-tiba' }, { en: 'absolve', id: 'membebaskan' },
-            // Tambahkan lebih banyak kosakata di sini...
-            // Contoh: minimal ada 4-5 entri untuk pembuatan distraktor yang lebih baik.
-            { en: 'accept', id: 'menerima' }, { en: 'achieve', id: 'mencapai' },
-            { en: 'acquire', id: 'memperoleh' }, { en: 'act', id: 'bertindak' },
-            // Batas akhirnya sampai sini 
+            { en: 'abstain', id: 'menjauhkan diri' }, { en: 'abstruse', id: 'muskil' },
+            { en: 'absurd', id: 'konyol' }, { en: 'abundant', id: 'berlimpah-limpah' },
+            { en: 'abyss', id: 'neraka' }, { en: 'accessible', id: 'diakses' },
+            { en: 'acclaim', id: 'pujian' }, { en: 'accomplice', id: 'pembantu' },
+            { en: 'accurate', id: 'tepat' }, { en: 'accuse', id: 'menuduh' },
+            { en: 'acid', id: 'asam' }, { en: 'acquaint', id: 'memperkenalkan' },
+            { en: 'acquiesce', id: 'menyetujui' }, { en: 'acrid', id: 'tajam' },
+            { en: 'actuate', id: 'menjalankan' }, { en: 'acute', id: 'akut' },
+            { en: 'adamant', id: 'kukuh' }, { en: 'adapt', id: 'menyesuaikan' },
+            { en: 'adept', id: 'mahir' }, { en: 'adequate', id: 'memadai' },
+            { en: 'adhere', id: 'mengikuti' }, { en: 'adjacent', id: 'berdekatan' },
+            { en: 'adjourn', id: 'mempertangguhkan' }, { en: 'admonish', id: 'menegur' },
+            { en: 'adorn', id: 'menghiasi' }, { en: 'advent', id: 'kedatangan' },
+            { en: 'adverse', id: 'merugikan' }, { en: 'advocate', id: 'penganjur' },
+            { en: 'affable', id: 'ramah' }, { en: 'affect', id: 'mempengaruhi' },
+            { en: 'affiliate', id: 'afiliasi' }, { en: 'affinity', id: 'afinitas' },
+            { en: 'affliction', id: 'penderitaan' }, { en: 'affluent', id: 'makmur' },
+            { en: 'aggravate', id: 'memperburuk' }, { en: 'aggregate', id: 'agregat' },
+            { en: 'agile', id: 'tangkas' }, { en: 'agitate', id: 'mengagitasi' },
+            { en: 'agrarian', id: 'agraris' }, { en: 'ailment', id: 'penyakit' },
+            { en: 'akin', id: 'sama' }, { en: 'allegiance', id: 'kepatuhan' },
+            { en: 'alleviate', id: 'meringankan' }, { en: 'allocate', id: 'membagikan' },
+            { en: 'allot', id: 'membagikan' }, { en: 'allude', id: 'menyinggung' },
+            { en: 'aloft', id: 'tinggi' }, { en: 'aloof', id: 'jauh' },
+            { en: 'alternative', id: 'alternatif' }, { en: 'amateurish', id: 'kurang baik' },
+            { en: 'amazing', id: 'menakjubkan' }, { en: 'ambient', id: 'ambien' },
+            { en: 'ambiguous', id: 'dwimakna' }, { en: 'ambivalence', id: 'ambivalensi' },
+            { en: 'ambivalent', id: 'ambivalen' }, { en: 'amelioration', id: 'perbaikan' },
+            { en: 'amenable', id: 'menerima' }, { en: 'amiable', id: 'ramah' },
+            { en: 'amicable', id: 'ramah tamah' }, { en: 'amnesia', id: 'amnesia' },
+            { en: 'amnesty', id: 'amnesti' }, { en: 'amphitheater', id: 'ampiteater' },
+            { en: 'analogous', id: 'sejalan' }, { en: 'anecdote', id: 'anekdot' },
+            { en: 'annex', id: 'mencaplok' }, { en: 'annual', id: 'tahunan' },
+            { en: 'anonymous', id: 'anonim' }, { en: 'antagonism', id: 'antagonisme' },
+            { en: 'antagonist', id: 'antagonis' }, { en: 'antebellum', id: 'sebelum perang' },
+            { en: 'antedate', id: 'mendahului' }, { en: 'anticipate', id: 'mengharapkan' },
+            { en: 'antique', id: 'antik' }, { en: 'anxious', id: 'cemas' },
+            { en: 'apathy', id: 'apati' }, { en: 'apollonian', id: 'Apolonia' },
+            { en: 'apparent', id: 'nyata' }, { en: 'appealing', id: 'menarik' },
+            { en: 'appease', id: 'menenangkan' }, { en: 'applaud', id: 'salut' },
+            { en: 'appraise', id: 'menilai' }, { en: 'apprise', id: 'memberitahukan' },
+            { en: 'approbation', id: 'persetujuan' }, { en: 'apt', id: 'tepat' },
+            { en: 'aqueous', id: 'encer' }, { en: 'arable', id: 'garapan' },
+            { en: 'arduous', id: 'sulit' }, { en: 'arid', id: 'gersang' },
+            { en: 'armistice', id: 'gencatan senjata' }, { en: 'aroma', id: 'aroma' },
+            { en: 'arrogant', id: 'sombong' }, { en: 'articulate', id: 'pandai berbicara' },
+            { en: 'artificial', id: 'buatan' }, { en: 'ascertain', id: 'memastikan' },
+            { en: 'assail', id: 'menyerang' }, { en: 'assault', id: 'serangan' },
+            { en: 'assert as', id: 'menegaskan' }, { en: 'assiduous', id: 'tekun' },
+            { en: 'assimilate', id: 'mengasimilasi' }, { en: 'astonishing', id: 'mengherankan' },
+            { en: 'astute', id: 'cerdik' }, { en: 'atone', id: 'menebus' },
+            { en: 'atrocious', id: 'mengerikan' }, { en: 'atrocity', id: 'kekejaman' },
+            { en: 'attain', id: 'mencapai' }, { en: 'attribute', id: 'atribut' },
+            { en: 'audacious', id: 'berani' }, { en: 'auditory', id: 'pendengaran' },
+            { en: 'augment', id: 'menambah' }, { en: 'august', id: 'mulia' },
+            { en: 'austere', id: 'keras' }, { en: 'authentic', id: 'asli' },
+            { en: 'authorize', id: 'mengizinkan' }, { en: 'autocracy', id: 'otokrasi' },
+            { en: 'automaton', id: 'otomat' }, { en: 'autonomy', id: 'otonomi' },
+            { en: 'avalanche', id: 'longsor' }, { en: 'avarice', id: 'ketamakan' },
+            { en: 'aver', id: 'menegaskan' }, { en: 'aversion', id: 'keengganan' },
+            { en: 'avert', id: 'mencegah' }, { en: 'aviator', id: 'penerbang' },
+            { en: 'avid', id: 'keranjingan' }, { en: 'avoid', id: 'menghindari' },
+            { en: 'avouch', id: 'menanggung' }, { en: 'awkward', id: 'canggung' },
+            { en: 'bacchanalian', id: 'pora' }, { en: 'bachelor', id: 'bujangan' },
+            { en: 'backbreaking', id: 'melelahkan' }, { en: 'baffle', id: 'membingungkan' },
+            { en: 'bald', id: 'botak' }, { en: 'balmy', id: 'gila' },
+            { en: 'ban', id: 'melarang' }, { en: 'bankrupt', id: 'palit' },
+            { en: 'bar', id: 'bar' }, { en: 'bare', id: 'telanjang' },
+            { en: 'barren', id: 'mandul' }, { en: 'barter', id: 'barter' },
+            { en: 'bashful', id: 'malu' }, { en: 'bead', id: 'titis' },
+            { en: 'beam', id: 'balok' }, { en: 'bear', id: 'menanggung' },
+            { en: 'beckon', id: 'mengisyaratkan' }, { en: 'becoming', id: 'menjadi' },
+            { en: 'befall', id: 'menimpa' }, { en: 'bellicose', id: 'yg suka berperang' },
+            { en: 'belligerence', id: 'agresif' }, { en: 'belligerent', id: 'yg suka berperang' },
+            { en: 'beneficial', id: 'bermanfaat' }, { en: 'beneficiary', id: 'penerima' },
+            { en: 'benefit', id: 'manfaat' }, { en: 'benevolent', id: 'penuh kebajikan' },
+            { en: 'bequeath', id: 'mewariskan' }, { en: 'besiege', id: 'mengepung' },
+            { en: 'bestow', id: 'melimpahkan' }, { en: 'betray', id: 'mengkhianati' },
+            { en: 'beverage', id: 'minuman' }, { en: 'bias', id: 'prasangka' },
+            { en: 'bicker', id: 'cekcok' }, { en: 'bilateral', id: 'bilateral' },
+            { en: 'biography', id: 'biografi' }, { en: 'bland', id: 'lunak' },
+            { en: 'blatant', id: 'menyolok' }, { en: 'blend', id: 'campuran' },
+            { en: 'blizzard', id: 'badai salju' }, { en: 'bloom', id: 'berkembang' },
+            { en: 'bluff', id: 'menggertak' }, { en: 'blunder', id: 'keliru' },
+            { en: 'blunt', id: 'menumpulkan' }, { en: 'blurry', id: 'kabur' },
+            { en: 'bold', id: 'berani' }, { en: 'bolster', id: 'mendukung' },
+            { en: 'bond', id: 'obligasi' }, { en: 'boom', id: 'ledakan' },
+            { en: 'bothersome', id: 'menyusahkan' }, { en: 'bough', id: 'dahan' },
+            { en: 'brace', id: 'penjepit' }, { en: 'breakthrough', id: 'penerobosan' },
+            { en: 'breathtaking', id: 'hati' }, { en: 'breed', id: 'berkembang biak' },
+            { en: 'breeze', id: 'angin sepoi-sepoi' }, { en: 'brilliant', id: 'cemerlang' },
+            { en: 'brisk', id: 'cepat' }, { en: 'brittle', id: 'rapuh' },
+            { en: 'broach', id: 'bros' }, { en: 'brochure', id: 'brosur' },
+            { en: 'brutal', id: 'brutal' }, { en: 'bulky', id: 'tebal' },
+            { en: 'burrow', id: 'liang' }, { en: 'buttress', id: 'menopang' },
+            { en: 'cajole', id: 'membujuk' }, { en: 'calamity', id: 'bencana' },
+            { en: 'calisthenics', id: 'senam' }, { en: 'calm', id: 'menenangkan' },
+            { en: 'camouflage', id: 'kamuflase' }, { en: 'canvass', id: 'kampas' },
+            { en: 'capable', id: 'mampu' }, { en: 'captivate', id: 'memikat hati' },
+            { en: 'captor', id: 'penawan' }, { en: 'carefree', id: 'riang' },
+            { en: 'caricature', id: 'karikatur' }, { en: 'carnage', id: 'pembunuhan besar-besaran' },
+            { en: 'carve', id: 'mengukir' }, { en: 'cast', id: 'melemparkan' },
+            { en: 'casual', id: 'lepas' }, { en: 'cataclysm', id: 'bencana alam' },
+            { en: 'catastrophe', id: 'malapetaka' }, { en: 'caustic', id: 'pedas' },
+            { en: 'cautious', id: 'berhati-hati' }, { en: 'cavity', id: 'rongga' },
+            { en: 'celebrated', id: 'kenamaan' }, { en: 'censor', id: 'sensor' },
+            { en: 'censure', id: 'kecaman' }, { en: 'census', id: 'sensus' },
+            { en: 'centennial', id: 'seratus tahun' }, { en: 'chaffer', id: 'tawar-menawar' },
+            { en: 'chaos', id: 'kekacauan' }, { en: 'charming', id: 'menawan' },
+            { en: 'chasm', id: 'jurang' }, { en: 'cherish', id: 'menghargai' },
+            { en: 'chicanery', id: 'ketidakjujuran' }, { en: 'chide', id: 'mencaci' },
+            { en: 'chilly', id: 'dingin' }, { en: 'choice', id: 'pilihan' },
+            { en: 'chop', id: 'memotong' }, { en: 'chubby', id: 'gemuk' },
+            { en: 'cicerone', id: 'penunjuk jalan' }, { en: 'cite', id: 'mengutip' },
+            { en: 'clandestine', id: 'rahasia' }, { en: 'clash', id: 'bentrokan' },
+            { en: 'classify', id: 'menggolongkan' }, { en: 'clever', id: 'pintar' },
+            { en: 'cliche', id: 'kata klise' }, { en: 'cling', id: 'melekat' },
+            { en: 'clumsy', id: 'kikuk' }, { en: 'coalescence', id: 'peleburan' },
+            { en: 'coalition', id: 'koalisi' }, { en: 'coax', id: 'membujuk' },
+            { en: 'coherent', id: 'koheren' }, { en: 'coin', id: 'koin' },
+            { en: 'collaborate', id: 'berkolaborasi' }, { en: 'colossal', id: 'kolosal' },
+            { en: 'commence', id: 'memulai' }, { en: 'commerce', id: 'perdagangan' },
+            { en: 'commitment', id: 'komitmen' }, { en: 'commodity', id: 'komoditi' },
+            { en: 'compact', id: 'padat' }, { en: 'compel', id: 'memaksa' }
+
+
+
         ];
 
         let questions = [];
 
-        // Urutkan vocabulary list berdasarkan kata Inggris (sekali di awal)
         rawVocabularyList.sort((a, b) => {
             const enA = a.en.toLowerCase();
             const enB = b.en.toLowerCase();
@@ -238,66 +362,42 @@
         function generateQuestions() {
             const allIndonesianTranslations = rawVocabularyList.map(item => item.id);
             questions = [];
-
-            if (rawVocabularyList.length < 1) {
-                console.warn("rawVocabularyList kosong, tidak ada soal yang bisa dibuat.");
-                return;
-            }
-             // Jika jumlah kosakata kurang dari 4, sulit membuat 3 distraktor unik.
-            const MIN_VOCAB_FOR_GOOD_DISTRACTORS = 4;
-
             rawVocabularyList.forEach(vocabItem => {
                 const correctAnswer = vocabItem.id;
                 const distractors = [];
-
-                // Coba dapatkan distraktor dari daftar terjemahan lain
-                let potentialDistractors = allIndonesianTranslations.filter(trans => trans !== correctAnswer);
-                // Acak daftar calon distraktor
-                potentialDistractors.sort(() => Math.random() - 0.5);
-
-                for (let i = 0; i < potentialDistractors.length && distractors.length < 3; i++) {
-                    if (!distractors.includes(potentialDistractors[i])) {
-                        distractors.push(potentialDistractors[i]);
+                let attempts = 0;
+                while (distractors.length < 3 && attempts < allIndonesianTranslations.length * 2) {
+                    const randomIndex = Math.floor(Math.random() * allIndonesianTranslations.length);
+                    const potentialDistractor = allIndonesianTranslations[randomIndex];
+                    if (potentialDistractor !== correctAnswer && !distractors.includes(potentialDistractor)) {
+                        distractors.push(potentialDistractor);
                     }
+                    attempts++;
                 }
-
-                // Jika distraktor masih kurang dari 3 (misal karena daftar kosakata sangat kecil)
-                // Gunakan fallback yang lebih sederhana.
-                const fallbackBase = ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"];
-                let fallbackIndex = 0;
                 while (distractors.length < 3) {
-                    // Pastikan fallback tidak sama dengan jawaban benar atau distraktor yang sudah ada
-                    let candidateFallback = fallbackBase[fallbackIndex % fallbackBase.length];
-                    if (rawVocabularyList.length < MIN_VOCAB_FOR_GOOD_DISTRACTORS) {
-                         // Tambahkan suffix acak jika daftar kosakata sangat kecil untuk menghindari duplikasi total
-                        candidateFallback += ` ${Math.floor(Math.random()*10)}`;
-                    }
-
-                    if (candidateFallback !== correctAnswer && !distractors.includes(candidateFallback)) {
-                        distractors.push(candidateFallback);
-                    } else if (rawVocabularyList.length < MIN_VOCAB_FOR_GOOD_DISTRACTORS && distractors.length < 3) {
-                        // Jika masih bentrok dan kosakata sedikit, paksa tambahkan sesuatu yang unik
-                        distractors.push(`Opsi Tambahan ${distractors.length + 1}`);
-                    }
-                    fallbackIndex++;
-                    if (fallbackIndex > fallbackBase.length * 2 && distractors.length < 3) { // Safety break
-                         // Jika setelah beberapa kali masih belum cukup, isi sisanya
-                        const needed = 3 - distractors.length;
-                        for(let j=0; j<needed; j++) {
-                            distractors.push(`Jawaban Lain ${distractors.length +1}`);
+                    const fallbackOptions = ["opsi lain A", "opsi lain B", "opsi lain C", "opsi lain D", "opsi lain E", "opsi lain F"];
+                    let fallbackIndex = 0;
+                    let safetyNet = 0;
+                    while(distractors.length < 3 && safetyNet < fallbackOptions.length * 3) {
+                        const fbOption = fallbackOptions[fallbackIndex % fallbackOptions.length] + `_${distractors.length}${Math.floor(Math.random()*100)}`;
+                        if (fbOption !== correctAnswer && !distractors.includes(fbOption)) {
+                             distractors.push(fbOption);
                         }
-                        break;
+                        fallbackIndex++;
+                        safetyNet++;
                     }
+                     if(distractors.length < 3) {
+                        for(let i=0; i < (3-distractors.length); i++){
+                            distractors.push("pilihan default " + (i+1+distractors.length) + Math.random().toString(36).substring(7));
+                        }
+                     }
                 }
-
                 const answerOptions = [
                     { text: correctAnswer, correct: true },
-                    // Pastikan ada 3 distraktor
-                    { text: distractors[0] || "Distraktor 1", correct: false },
-                    { text: distractors[1] || "Distraktor 2", correct: false },
-                    { text: distractors[2] || "Distraktor 3", correct: false }
+                    { text: distractors[0], correct: false },
+                    { text: distractors[1], correct: false },
+                    { text: distractors[2], correct: false }
                 ];
-
                 questions.push({
                     question: vocabItem.en,
                     answers: answerOptions
@@ -305,14 +405,14 @@
             });
         }
 
-        generateQuestions(); // Panggil sekali untuk menyiapkan daftar soal
+        generateQuestions();
 
         function saveProgress() {
             if (!questionContainerElement.classList.contains('hide') && orderedQuestions && currentQuestionIndex < orderedQuestions.length) {
-                const progress = {
+                 const progress = {
                     currentQuestionIndex: currentQuestionIndex,
                     score: score,
-                    orderedQuestions: orderedQuestions // Simpan urutan soal yang sedang dipakai
+                    orderedQuestions: orderedQuestions
                 };
                 localStorage.setItem('quizProgress', JSON.stringify(progress));
             }
@@ -323,17 +423,13 @@
             if (savedProgress) {
                 try {
                     const progressData = JSON.parse(savedProgress);
-                    // Validasi lebih ketat: apakah struktur data sesuai?
                     if (progressData && typeof progressData.currentQuestionIndex === 'number' &&
                         typeof progressData.score === 'number' && Array.isArray(progressData.orderedQuestions) &&
                         progressData.orderedQuestions.length > 0 &&
-                        // Cek apakah soal yang disimpan masih relevan dengan daftar soal saat ini (berdasarkan jumlah)
-                        // Ini penting jika Anda mengubah rawVocabularyList
-                        progressData.orderedQuestions.length === questions.length &&
-                        progressData.currentQuestionIndex < progressData.orderedQuestions.length) {
+                        progressData.currentQuestionIndex < progressData.orderedQuestions.length &&
+                        progressData.orderedQuestions.length === questions.length) { // Validasi tambahan: jumlah soal harus sama
                         return progressData;
                     } else {
-                        console.warn("Saved progress data is invalid or doesn't match current questions. Clearing.");
                         clearProgress();
                         return null;
                     }
@@ -351,11 +447,11 @@
         }
 
         prev50Button.addEventListener('click', () => navigateQuestions(-JUMP_AMOUNT));
-        prevQuestionButton.addEventListener('click', () => navigateQuestions(-1));
+        prevQuestionButton.addEventListener('click', () => navigateQuestions(-1)); // Event listener untuk tombol baru
         next50Button.addEventListener('click', () => navigateQuestions(JUMP_AMOUNT));
 
         function navigateQuestions(amount) {
-            clearTimeout(questionTimeout); // Hentikan timer otomatis pindah soal
+            clearTimeout(questionTimeout);
             if (!orderedQuestions || orderedQuestions.length === 0) return;
 
             let newIndex = currentQuestionIndex + amount;
@@ -364,36 +460,35 @@
 
             if (newIndex !== currentQuestionIndex) {
                 currentQuestionIndex = newIndex;
-                setNextQuestion(); // Ini akan menyimpan progress
+                setNextQuestion();
             } else {
-                updateSkipButtonStates(); // Perbarui state tombol jika indeks tidak berubah (misal sudah di ujung)
+                updateSkipButtonStates();
             }
         }
 
         function updateSkipButtonStates() {
             if (!orderedQuestions || orderedQuestions.length === 0 || questionContainerElement.classList.contains('hide')) {
                 skipNavigationControls.classList.add('hide');
-                // Tidak perlu cek if(prev50Button) jika yakin elemen selalu ada
-                prev50Button.disabled = true;
-                prevQuestionButton.disabled = true;
-                next50Button.disabled = true;
+                if(prev50Button) prev50Button.disabled = true;
+                if(prevQuestionButton) prevQuestionButton.disabled = true; // Nonaktifkan tombol baru
+                if(next50Button) next50Button.disabled = true;
                 return;
             }
             skipNavigationControls.classList.remove('hide');
             const isFirstQuestion = currentQuestionIndex === 0;
             const isLastQuestion = currentQuestionIndex === (orderedQuestions.length - 1);
 
-            prev50Button.disabled = isFirstQuestion;
-            prevQuestionButton.disabled = isFirstQuestion;
-            next50Button.disabled = isLastQuestion;
+            if(prev50Button) prev50Button.disabled = isFirstQuestion;
+            if(prevQuestionButton) prevQuestionButton.disabled = isFirstQuestion; // Atur status disabled tombol baru
+            if(next50Button) next50Button.disabled = isLastQuestion;
 
-            // Jika hanya ada satu soal, semua tombol navigasi disabled
             if (orderedQuestions.length <= 1) {
-                prev50Button.disabled = true;
-                prevQuestionButton.disabled = true;
-                next50Button.disabled = true;
+                if(prev50Button) prev50Button.disabled = true;
+                if(prevQuestionButton) prevQuestionButton.disabled = true; // Atur status disabled tombol baru
+                if(next50Button) next50Button.disabled = true;
             }
         }
+
 
         window.addEventListener('load', () => {
             const savedData = loadProgress();
@@ -404,15 +499,13 @@
             } else {
                 continueButton.classList.add('hide');
             }
-
             if (questionContainerElement.classList.contains('hide')) {
                 initialControls.classList.remove('hide');
                 skipNavigationControls.classList.add('hide');
             } else {
-                // Jika kuis tidak disembunyikan (misal setelah refresh halaman saat kuis aktif)
-                // Pastikan UI sesuai, meskipun idealnya loadProgress menangani ini via startGame
-                initialControls.classList.add('hide');
-                updateSkipButtonStates(); // Mungkin perlu dipanggil di sini jika kuis dilanjutkan otomatis
+                 initialControls.classList.add('hide');
+                 // Mungkin juga perlu updateSkipButtonStates() di sini jika kuis dilanjutkan
+                 // dan langsung menampilkan soal.
             }
         });
 
@@ -422,37 +515,31 @@
         function startGame(isContinuing = false) {
             clearTimeout(questionTimeout);
             completionMessageElement.classList.add('hide');
-            
+            if (!isContinuing) {
+                startButton.innerText = 'Mulai';
+            }
             initialControls.classList.add('hide');
             questionContainerElement.classList.remove('hide');
             questionCounterElement.classList.remove('hide');
 
-            const savedData = loadProgress(); // Selalu coba load progress terbaru
-
-            if (isContinuing && savedData) {
-                orderedQuestions = savedData.orderedQuestions; // Gunakan urutan soal yang tersimpan
+            const savedData = loadProgress();
+            if (isContinuing && savedData && savedData.orderedQuestions && savedData.orderedQuestions.length === questions.length) {
+                orderedQuestions = savedData.orderedQuestions;
                 currentQuestionIndex = savedData.currentQuestionIndex;
                 score = savedData.score;
-                startButton.innerText = 'Mulai'; // Tetap "Mulai" jika Lanjutkan gagal & mulai baru
             } else {
-                clearProgress(); // Hapus progres lama jika mulai baru atau continue gagal
-                // SARAN: Opsi untuk mengacak soal saat mulai baru
-                // orderedQuestions = [...questions].sort(() => Math.random() - 0.5); // Acak
-                orderedQuestions = [...questions]; // Tidak acak (sesuai urutan di rawVocabularyList)
+                clearProgress();
+                orderedQuestions = [...questions];
                 currentQuestionIndex = 0;
                 score = 0;
-                startButton.innerText = 'Mulai';
             }
-            
+
             if (!orderedQuestions || orderedQuestions.length === 0) {
-                showResults(); // Tampilkan pesan jika tidak ada soal
-                completionMessageElement.innerText = "Tidak ada soal untuk ditampilkan. Mohon tambahkan kosakata.";
-                completionMessageElement.style.color = "#dc3545"; // Warna merah untuk error
+                showResults();
+                completionMessageElement.innerText = "Tidak ada soal untuk ditampilkan.";
+                completionMessageElement.style.color = "#dc3545";
                 completionMessageElement.classList.remove('hide');
-                startButton.innerText = 'Mulai'; // Kembalikan teks tombol mulai
-                initialControls.classList.remove('hide'); // Tampilkan lagi tombol awal
-                questionContainerElement.classList.add('hide');
-                questionCounterElement.classList.add('hide');
+                startButton.innerText = 'Mulai';
                 return;
             }
             setNextQuestion();
@@ -463,29 +550,26 @@
             if (orderedQuestions && currentQuestionIndex < orderedQuestions.length) {
                 questionCounterElement.innerText = `${currentQuestionIndex + 1} / ${orderedQuestions.length}`;
                 showQuestion(orderedQuestions[currentQuestionIndex]);
-                saveProgress(); // Simpan progress setiap kali soal baru ditampilkan
-                // Hapus fokus dari elemen aktif (misalnya tombol jawaban sebelumnya)
+                saveProgress();
                 if (document.activeElement && typeof document.activeElement.blur === 'function') {
                     document.activeElement.blur();
                 }
             } else {
-                showResults(); // Tampilkan hasil jika semua soal selesai
+                showResults();
             }
-            updateSkipButtonStates();
+            updateSkipButtonStates(); // Panggil di sini untuk memastikan state tombol selalu update
         }
 
         function showQuestion(questionData) {
             questionElement.innerText = questionData.question;
-            answerButtonsElement.innerHTML = ''; // Kosongkan tombol jawaban sebelumnya
-            // Acak urutan pilihan jawaban
+            answerButtonsElement.innerHTML = '';
             const shuffledAnswers = [...questionData.answers].sort(() => Math.random() - 0.5);
-
             shuffledAnswers.forEach(answer => {
                 const button = document.createElement('button');
                 button.innerText = answer.text;
                 button.classList.add('btn');
                 if (answer.correct) {
-                    button.dataset.correct = "true"; // Simpan status benar sebagai string "true"
+                    button.dataset.correct = answer.correct;
                 }
                 button.addEventListener('click', selectAnswer);
                 answerButtonsElement.appendChild(button);
@@ -494,51 +578,34 @@
 
         function resetState() {
             clearTimeout(questionTimeout);
-            // Tidak perlu loop manual untuk menghapus children jika akan menggunakan innerHTML = ''
-            // di showQuestion. Tapi jika ingin lebih eksplisit:
-            // while (answerButtonsElement.firstChild) {
-            //     answerButtonsElement.removeChild(answerButtonsElement.firstChild);
-            // }
-            // Juga pastikan tombol-tombol jawaban yang lama (jika tidak dihapus via innerHTML)
-            // tidak lagi memiliki kelas 'correct' atau 'wrong' jika diperlukan.
-            // Namun, karena kita innerHTML = '', ini sudah bersih.
+            while (answerButtonsElement.firstChild) {
+                answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+            }
         }
 
         function selectAnswer(e) {
             const selectedButton = e.target;
-            const correct = selectedButton.dataset.correct === 'true'; // Bandingkan dengan string "true"
-
-            if (correct) {
-                score++;
-            }
-
+            const correct = selectedButton.dataset.correct === 'true';
+            if (correct) { score++; }
             Array.from(answerButtonsElement.children).forEach(button => {
                 setStatusClass(button, button.dataset.correct === 'true');
-                button.disabled = true; // Nonaktifkan semua tombol jawaban setelah dipilih
+                button.disabled = true;
             });
-
-            saveProgress(); // Simpan progres setelah menjawab
-
-            // Otomatis pindah ke soal berikutnya atau tampilkan hasil
+            saveProgress();
             questionTimeout = setTimeout(() => {
-                if (orderedQuestions && currentQuestionIndex < orderedQuestions.length - 1) {
+                if (orderedQuestions && currentQuestionIndex < orderedQuestions.length -1) {
                     currentQuestionIndex++;
                     setNextQuestion();
-                } else if (orderedQuestions && currentQuestionIndex === orderedQuestions.length - 1) {
-                    // Ini adalah soal terakhir, tampilkan hasil
+                } else if (orderedQuestions && currentQuestionIndex === orderedQuestions.length -1) {
                     showResults();
                 }
-                 // Tidak perlu kondisi lain, jika kuis selesai, showResults() akan dipanggil.
-            }, 1500); // Waktu Perpindahan soal (misal 1.5 detik)
+            }, 9000);
         }
 
-        function setStatusClass(element, isCorrect) {
-            clearStatusClass(element); // Hapus kelas status sebelumnya
-            if (isCorrect) {
-                element.classList.add('correct');
-            } else {
-                element.classList.add('wrong');
-            }
+        function setStatusClass(element, correct) {
+            clearStatusClass(element);
+            if (correct) { element.classList.add('correct'); }
+            else { element.classList.add('wrong'); }
         }
 
         function clearStatusClass(element) {
@@ -551,16 +618,13 @@
             questionContainerElement.classList.add('hide');
             questionCounterElement.classList.add('hide');
             skipNavigationControls.classList.add('hide');
-            
-            completionMessageElement.innerText = `Kuis Selesai! Skor Anda: ${score} / ${orderedQuestions ? orderedQuestions.length : 0} 🎉`;
-            completionMessageElement.style.color = "#28a745"; // Warna hijau untuk sukses
+            clearProgress();
+            completionMessageElement.innerText = "Selamat Kuis Sudah Selesai 🎉";
+            completionMessageElement.style.color = "#28a745";
             completionMessageElement.classList.remove('hide');
-            
             startButton.innerText = 'Ulangi Kuis';
             initialControls.classList.remove('hide');
-            continueButton.classList.add('hide'); // Sembunyikan tombol lanjutkan setelah kuis selesai
-            
-            clearProgress(); // Hapus progres setelah kuis selesai dan hasil ditampilkan
+            continueButton.classList.add('hide');
         }
     </script>
 </body>
